@@ -101,7 +101,7 @@ namespace CenezzInvoice
             bSource.DataSource = table;
             this.lister.DataSource = bSource;
             this.resizegrid();
-
+        
             //here i checked number of rows of dt1 and it shows the correct value
         }
 
