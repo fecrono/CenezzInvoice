@@ -1,0 +1,1307 @@
+
+
+                #region headerinvoice
+                /*
+                concentrado.Cells[1, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                concentrado.Cells[1, 1].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+                */
+                cm.Dispose();da.Dispose();dt.Dispose();
+                
+                //con.Open();
+                query = "SELECT * FROM invoicespl WHERE id =" + idinvo.Text + ";";
+                cm = new SqlCommand(query, con);
+                da = new SqlDataAdapter(cm);
+               dt = new DataTable();
+                da.Fill(dt);
+                cuenta = dt.Rows.Count;
+                if (cuenta > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+
+                        id = "" + row["id"]; folio = "" + row["folio"]; empresa = "" + row["empresa"]; idcli = "" + row["idcli"];
+                        nomcli = "" + row["nomcli"];
+                        callecli = "" + row["callecli"];
+                        numcli = "" + row["numcli"]; numclii = "" + row["numclii"]; colcli = "" + row["colcli"];
+                        muncli = "" + row["muncli"];
+                        edocli = "" + row["edocli"]; paiscli = "" + row["paiscli"];
+                        fecha = "" + row["fecha"]; albaran = "" + row["albaran"];
+                        origdest = "" + row["origdest"]; tot = "" + row["tot"];
+                        currency = "" + row["currency"];
+
+                        obs1 = "" + row["obs1"];
+                        obs2 = "" + row["obs2"];
+                        obs3 = "" + row["obs3"];
+                        obs4 = "" + row["obs4"];
+                        obs5 = "" + row["obs5"];
+                        numee = "" + row["number"];
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Orden no existe");
+                }
+                cm.Dispose(); da.Dispose(); dt.Dispose();
+
+
+                query = "SELECT * FROM empresasipl WHERE id =" + empresa + ";";
+                cm = new SqlCommand(query, con);
+                da = new SqlDataAdapter(cm);
+                dt = new DataTable();
+                da.Fill(dt);
+                cuenta = dt.Rows.Count;
+                if (cuenta > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        ide = "" + row["id"]; nome = "" + row["nom"]; nife = "" + row["nif"]; callee = "" + row["calle"]; nume = "" + row["num"]; numie = "" + row["numi"]; cole = "" + row["col"]; cde = "" + row["cd"]; estadoe = "" + row["estado"]; paise = "" + row["pais"]; cpe = "" + row["cp"];
+                    }
+                }
+                cm.Dispose(); da.Dispose(); dt.Dispose();
+
+
+                query = "SELECT id,cp FROM clientesipl WHERE id =" + idcli + ";";
+                cm = new SqlCommand(query, con);
+                da = new SqlDataAdapter(cm);
+                dt = new DataTable();
+                da.Fill(dt);
+                cuenta = dt.Rows.Count;
+                if (cuenta > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        cpcli = "" + row["cp"];
+                    }
+                }
+                cm.Dispose(); da.Dispose(); dt.Dispose();
+
+                if (currency =="USD" ) { csymbol = "\"US$\"#,##0.00;-\"US$\"#,##0.00"; }
+                if (currency == "EUR") { csymbol = "\"\"#,##0.00€;-\"\"#,##0.00€"; }
+
+
+                concentrado.Cells["A1:H1"].Merge = true;
+                concentrado.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A1"].Style.Font.Size = 16;
+                concentrado.Cells["A1"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A1"].Style.Font.Bold = true;
+                concentrado.Cells["A1"].Value = "" + nome;
+
+
+                concentrado.Cells["A2:H2"].Merge = true;
+                concentrado.Cells["A2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["A2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A2"].Style.Font.Size = 9;
+                concentrado.Cells["A2"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A2"].Style.WrapText = true;
+                concentrado.Row(2).Height = 55;
+                concentrado.Cells["A2"].Value = "CIF: " + nife + "\r\nDIRECCIÓN: " + callee + " # " +  nume + " " + numie + ", " + cole + ", " +""+cde + ", " +  estadoe + ", " +  paise + " C.P.: " + " " + cpe + "";
+
+                concentrado.Cells["A3:H3"].Merge = true;
+                concentrado.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A3"].Style.Font.Size = 11;
+                concentrado.Cells["A3"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A3"].Style.WrapText = true;
+                concentrado.Row(3).Height = 10;
+                concentrado.Cells["A3"].Value = "" ;
+
+
+
+                concentrado.Cells["A5:H5"].Merge = true;
+                concentrado.Cells["A5"].Style.Font.Bold = true;
+                concentrado.Cells["A5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A5"].Style.Font.Size = 16;
+                concentrado.Cells["A5"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A5"].Style.WrapText = true;
+                concentrado.Row(5).Height = 30;
+                concentrado.Cells["A5"].Value = "FACTURA";
+
+              /*  
+                concentrado.Cells["A7"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["A7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A7"].Style.Font.Size = 10;
+                concentrado.Cells["A7"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A7"].Style.WrapText = true;
+                concentrado.Row(7).Height = 20;
+                concentrado.Cells["A7"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["A7"].Value = "BUYER:";
+
+                concentrado.Cells["A8:A11"].Merge = true;
+                concentrado.Cells["A8"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["A8"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A8"].Style.Font.Size = 10;
+                concentrado.Cells["A8"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A8"].Style.WrapText = true;
+                concentrado.Cells["A8:A11"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["A8"].Value = "ADDRESS:";
+                */
+
+
+                concentrado.Cells["A7:E11"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["A7:E7"].Merge = true;
+                concentrado.Cells["A7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A7"].Style.Font.Size = 10;
+                concentrado.Cells["A7"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A7"].Style.WrapText = true;
+                concentrado.Cells["A7:E7"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["A7"].Value = "" + nomcli;
+
+
+                concentrado.Cells["A8:E8"].Merge = true;
+                concentrado.Cells["A8"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A8"].Style.Font.Size = 10;
+                concentrado.Cells["A8"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A8"].Style.WrapText = true;
+                concentrado.Cells["A8"].Value = "" + callecli + " " + numcli + " " + numclii;
+
+                concentrado.Cells["A9:E9"].Merge = true;
+                concentrado.Cells["A9"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A9"].Style.Font.Size = 10;
+                concentrado.Cells["A9"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A9"].Style.WrapText = true;
+                concentrado.Cells["A9"].Value = "" + colcli + "";
+
+                concentrado.Cells["A10:E10"].Merge = true;
+                concentrado.Cells["A10"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A10"].Style.Font.Size = 10;
+                concentrado.Cells["A10"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A10"].Style.WrapText = true;
+                concentrado.Cells["A10"].Value = "" + muncli + ", " + edocli;
+
+                concentrado.Cells["A11:E11"].Merge = true;
+                concentrado.Cells["A11"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A11"].Style.Font.Size = 10;
+                concentrado.Cells["A11"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A11"].Style.WrapText = true;
+                concentrado.Cells["A11"].Value = "" + paiscli + ", C.P.: " + cpcli;
+
+              usCulture = new System.Globalization.CultureInfo("en-US");
+                //DateTime result = DateTime.ParseExact("" + fecha.Replace("/","-"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                iDate = "" + fecha;
+                oDate = Convert.ToDateTime(iDate);
+
+
+                concentrado.Cells["G7"].Style.Font.Size = 10;
+                concentrado.Cells["G7"].Style.Font.Name = "Calibri";
+                concentrado.Cells["G7"].Value = "FECHA: " + oDate.ToString("yyyy-MM-dd");
+
+
+                concentrado.Cells["G8"].Style.Font.Size = 10;
+                concentrado.Cells["G8"].Style.Font.Name = "Calibri";
+                concentrado.Cells["G8"].Value = "No.: " + numee;
+
+                concentrado.Cells["G9"].Style.Font.Size = 10;
+                concentrado.Cells["G9"].Style.Font.Name = "Calibri";
+                concentrado.Cells["G9"].Value = "Factura: " + folio;
+
+                /*
+                string strDate = "" + fecha;
+                DateTimeFormatInfo dtinfo = new DateTimeFormatInfo();
+                dtinfo.ShortDatePattern = "dd,MMM,yyyy";
+                DateTime resultDate = Convert.ToDateTime(strDate, dtinfo);
+                */
+
+
+
+
+                concentrado.Cells["A13"].Style.Font.Size = 10;
+                concentrado.Cells["A13"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A13"].Value = "Per S.S. " + origdest;
+
+
+                
+                concentrado.Cells["A14:A15"].Merge = true;
+                concentrado.Cells["A14:A15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["A14"].Style.Font.Size = 10;
+                concentrado.Cells["A14"].Style.Font.Name = "Calibri";
+                concentrado.Cells["A14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["A14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A14"].Style.WrapText = true;
+                concentrado.Cells["A14"].Value = "MODEL";
+
+                concentrado.Cells["B14:B15"].Merge = true;
+                concentrado.Cells["B14:B15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["B14"].Style.Font.Size = 10;
+                concentrado.Cells["B14"].Style.Font.Name = "Calibri";
+                concentrado.Cells["B14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["B14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["B14"].Style.WrapText = true;
+                concentrado.Cells["B14"].Value = "SIZE";
+                /*
+                concentrado.Cells["B14:B15"].Merge = true;
+                concentrado.Cells["B14:B15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["B14"].Style.Font.Size = 10;
+                concentrado.Cells["B14"].Style.Font.Name = "Calibri";
+                concentrado.Cells["B14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["B14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["B14"].Style.WrapText = true;
+                concentrado.Cells["B14"].Value = "MODEL";
+                */
+                concentrado.Cells["C14:C15"].Merge = true;
+                concentrado.Cells["C14:C15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["C14"].Style.Font.Size = 10;
+                concentrado.Cells["C14"].Style.Font.Name = "Calibri";
+                concentrado.Cells["C14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["C14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["C14"].Style.WrapText = true;
+                concentrado.Cells["C14"].Value = "UNIT";
+
+
+                concentrado.Cells["D14:F14"].Merge = true;
+                concentrado.Cells["D14:F14"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["D14"].Style.Font.Size = 10;
+                concentrado.Cells["D14"].Style.Font.Name = "Calibri";
+                concentrado.Cells["D14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["D14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["D14"].Style.WrapText = true;
+                concentrado.Cells["D14"].Value = "Quantity";
+
+                concentrado.Cells["D15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["D15"].Style.Font.Size = 10;
+                concentrado.Cells["D15"].Style.Font.Name = "Calibri";
+                concentrado.Cells["D15"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["D15"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["D15"].Style.WrapText = true;
+                concentrado.Cells["D15"].Value = "(AMOUNT)";
+
+                concentrado.Cells["E15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["E15"].Style.Font.Size = 10;
+                concentrado.Cells["E15"].Style.Font.Name = "Calibri";
+                concentrado.Cells["E15"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["E15"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["E15"].Style.WrapText = true;
+                concentrado.Cells["E15"].Value = "(CTNS)";
+
+                concentrado.Cells["F15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["F15"].Style.Font.Size = 10;
+                concentrado.Cells["F15"].Style.Font.Name = "Calibri";
+                concentrado.Cells["F15"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["F15"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["F15"].Style.WrapText = true;
+                concentrado.Cells["F15"].Value = "(SQM)";
+
+
+                concentrado.Cells["G14:G15"].Merge = true;
+                concentrado.Cells["G14:G15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["G14"].Style.Font.Size = 10;
+                concentrado.Cells["G14"].Style.Font.Name = "Calibri";
+                concentrado.Cells["G14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["G14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["G14"].Style.WrapText = true;
+                concentrado.Cells["G14"].Value = "Unit Price (" + currency + ")";
+
+                concentrado.Cells["H14"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["H14"].Style.Font.Size = 10;
+                concentrado.Cells["H14"].Style.Font.Name = "Calibri";
+                concentrado.Cells["H14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["H14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["H14"].Style.WrapText = true;
+                concentrado.Cells["H14"].Value = "TOTAL AMOUNT";
+
+                concentrado.Cells["H15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["H15"].Style.Font.Size = 10;
+                concentrado.Cells["H15"].Style.Font.Name = "Calibri";
+                concentrado.Cells["H15"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["H15"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["H15"].Style.WrapText = true;
+                concentrado.Cells["H15"].Value = "(" + currency + ")";
+
+                /*
+                concentrado.Cells["I14:I15"].Merge = true;
+                concentrado.Cells["I14:I15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["I14"].Style.Font.Size = 10;
+                concentrado.Cells["I14"].Style.Font.Name = "Calibri";
+                concentrado.Cells["I14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["I14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["I14"].Style.WrapText = true;
+                concentrado.Cells["I14"].Value = "No.of CTNRS";
+                */
+
+
+                #endregion headerinvoice
+
+                #region builderinvoice
+                rownu = 16; contu = 1; rowni = 16;
+                caja = "";  mtscaja = ""; kgspiece = ""; kgscaja = ""; sku = "";
+
+                ctns = 0; sqm = 0; tctns = 0; tsqm = 0; cajad = 0; mtsd = 0; pallets=0;
+                size = ""; pallet = ""; units="";
+                query = "SELECT * FROM rowsipl WHERE ord ='" + id + "' ORDER BY container, clave ASC;";
+                cm = new SqlCommand(query, con);
+                da = new SqlDataAdapter(cm);
+                dt = new DataTable();
+                da.Fill(dt);
+                cuenta = dt.Rows.Count;
+                if (cuenta > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+
+                        string querya = "SELECT * FROM artsipl WHERE clave ='" + row["clave"] + "';";
+                        SqlCommand cma = new SqlCommand(querya, con);
+                        SqlDataAdapter daa = new SqlDataAdapter(cma);
+                        DataTable dta = new DataTable();
+                        daa.Fill(dta);
+                        int cuentaa = dta.Rows.Count;
+                        if (cuentaa > 0)
+                        {
+                            foreach (DataRow rowa in dta.Rows)
+                            {
+                                size = "" + rowa["size"];
+                                caja = "" + rowa["caja"]; mtscaja = "" + rowa["mtscaja"]; kgspiece = "" + rowa["kgspiece"];
+                                kgscaja = "" + rowa["kgscaja"]; sku = "" + rowa["size"];
+                                pallet = "" + rowa["pallet"];
+                                units = "" + rowa["ume"];
+                            }
+
+                        }
+                        cma.Dispose(); daa.Dispose(); dta.Dispose();
+
+
+                        //ide = "" + row["id"]; nome = "" + row["nom"]; nife = "" + row["nif"]; callee = "" + row["calle"]; nume = "" + row["num"]; numie = "" + row["numi"]; cole = "" + row["col"]; cde = "" + row["cd"]; estadoe = "" + row["estado"]; paise = "" + row["pais"]; cpe = "" + row["cp"];
+                        //ord, cant, clave, ume, pu, importe, container
+                        concentrado.Cells["A" + rownu].Merge = true;
+                        concentrado.Cells["A" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["A" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["A" + rownu].Style.WrapText = true;
+                        concentrado.Cells["A" + rownu].Value = row["clave"];
+
+                        concentrado.Cells["B" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["B" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["B" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["B" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["B" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["B" + rownu].Style.WrapText = true;
+                        concentrado.Cells["B" + rownu].Value = "" + size;
+
+                        concentrado.Cells["C" + rownu].Merge = true;
+                        concentrado.Cells["C" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["C" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["C" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["C" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["C" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["C" + rownu].Style.WrapText = true;
+                        concentrado.Cells["C" + rownu].Value = "" + units;
+
+
+
+                        /*
+                        concentrado.Cells["B" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["B" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["B" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["B" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["B" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["B" + rownu].Style.WrapText = true;
+                        concentrado.Cells["B" + rownu].Value ="" + row["clave"];
+                        */
+
+
+
+
+
+                        sqm = 0;
+                        tctns = 0;
+                        tsqm = 0;
+                        cajad = 0;
+                        mtsd = 0;
+                        pallets = 0;
+
+                        try { ctns = double.Parse("" + caja);  } 
+                        catch { ctns = 0; }
+
+                        try { sqm = double.Parse("" + mtscaja); }
+                        catch { sqm = 0; }
+
+                        try
+                        {
+                            tctns = double.Parse("" + row["cant"]) / ctns ;
+                        }
+                        catch { tctns = 0; }
+
+                        try
+                        {
+                            tsqm = sqm * tctns;
+                        }
+                        catch { tsqm = 0; }
+
+                     
+
+                        concentrado.Cells["D" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["D" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["D" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["D" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["D" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["D" + rownu].Style.WrapText = true;
+                        concentrado.Cells["D" + rownu].Style.Numberformat.Format =  "##0.00";
+                        concentrado.Cells["D" + rownu].Value = double.Parse("" + row["cant"]);
+
+                        concentrado.Cells["E" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["E" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["E" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["E" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["E" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["E" + rownu].Style.WrapText = true;
+                        concentrado.Cells["E" + rownu].Style.Numberformat.Format = "#,##0.00";
+                        concentrado.Cells["E" + rownu].Value = double.Parse("" + tctns);
+
+                        concentrado.Cells["F" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["F" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["F" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["F" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["F" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["F" + rownu].Style.WrapText = true;
+                        concentrado.Cells["F" + rownu].Style.Numberformat.Format = "#,##0.00";
+                        concentrado.Cells["F" + rownu].Value =double.Parse("" + tsqm);
+
+                        concentrado.Cells["G" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["G" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["G" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["G" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["G" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["G" + rownu].Style.WrapText = true;
+                        concentrado.Cells["G" + rownu].Style.Numberformat.Format =  ""  + csymbol;
+                        concentrado.Cells["G" + rownu].Value = double.Parse("" + row["pu"]);
+
+                        concentrado.Cells["H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["H" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["H" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["H" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["H" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["H" + rownu].Style.WrapText = true;
+                        concentrado.Cells["H" + rownu].Style.Numberformat.Format =  "" + csymbol;
+                        concentrado.Cells["H" + rownu].Value = double.Parse("" + row["importe"]);
+                        /*
+                        concentrado.Cells["I" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["I" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        concentrado.Cells["I" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["I" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["I" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["I" + rownu].Style.WrapText = true;
+                        concentrado.Cells["I" + rownu].Value = "" + row["container"];
+                        */
+                        rownu = rownu + 1; contu = contu + 1;
+
+                    }
+                }
+                cm.Dispose(); da.Dispose(); dt.Dispose();
+                #endregion builerinvoice
+
+                #region footerinvoice
+                rowf = rownu;
+                if (rowf > rowni)
+                {
+                    rowf = rowf - 1;
+                }
+                rownu = rownu + 1;
+                concentrado.Cells["A" + rownu+ ":C" + rownu].Merge = true;
+                concentrado.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["A" + rownu].Style.Font.Size = 9;
+                concentrado.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                concentrado.Cells["A" + rownu].Style.WrapText = true;
+                concentrado.Row(rownu).Height = 20;
+                concentrado.Cells["A" + rownu + ":C" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["A" + rownu].Value = "TOTAL";
+
+                concentrado.Cells["D" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["D" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["D" + rownu].Style.Font.Size = 9;
+                concentrado.Cells["D" + rownu].Style.Font.Name = "Calibri";
+                concentrado.Cells["D" + rownu].Style.WrapText = true;
+                concentrado.Cells["D" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["D" + rownu].Style.Numberformat.Format =  "##0.00";
+                concentrado.Cells["D" + rownu].Formula = "=SUM(D" + rowni + ":D" + rowf +")";
+
+
+                concentrado.Cells["E" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["E" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["E" + rownu].Style.Font.Size = 9;
+                concentrado.Cells["E" + rownu].Style.Font.Name = "Calibri";
+                concentrado.Cells["E" + rownu].Style.WrapText = true;
+                concentrado.Cells["E" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["E" + rownu].Style.Numberformat.Format =  "##0.00";
+                concentrado.Cells["E" + rownu].Formula = "=SUM(E" + rowni + ":E" + rowf + ")";
+
+                concentrado.Cells["F" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["F" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["F" + rownu].Style.Font.Size = 9;
+                concentrado.Cells["F" + rownu].Style.Font.Name = "Calibri";
+                concentrado.Cells["F" + rownu].Style.WrapText = true;
+                concentrado.Cells["F" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["F" + rownu].Style.Numberformat.Format =  "##0.00";
+                concentrado.Cells["F" + rownu].Formula = "=SUM(F" + rowni + ":F" + rowf + ")";
+
+                concentrado.Cells["G" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["G" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["G" + rownu].Style.Font.Size = 9;
+                concentrado.Cells["G" + rownu].Style.Font.Name = "Calibri";
+                concentrado.Cells["G" + rownu].Style.WrapText = true;
+                concentrado.Cells["G" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                concentrado.Cells["H" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                concentrado.Cells["H" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                concentrado.Cells["H" + rownu].Style.Font.Size = 9;
+                concentrado.Cells["H" + rownu].Style.Font.Name = "Calibri";
+                concentrado.Cells["H" + rownu].Style.WrapText = true;
+                concentrado.Cells["H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                concentrado.Cells["H" + rownu].Style.Numberformat.Format = "" + csymbol;
+                concentrado.Cells["H" + rownu].Formula = "=SUM(H" + rowni + ":H" + rowf + ")";
+
+
+
+
+                
+
+                if (obs1 != "")
+                {
+                    int rowes = 32;
+                    rownu = rownu + 2;
+                    concentrado.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                    concentrado.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    concentrado.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    concentrado.Cells["A" + rownu].Style.Font.Size = 9;
+                    concentrado.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                    concentrado.Cells["A" + rownu].Style.Font.Bold = true;
+                    concentrado.Cells["A" + rownu].Style.WrapText = true;
+                    concentrado.Row(rownu).Height = 15;
+                    concentrado.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    concentrado.Cells["A" + rownu].Value = "OBSERVACIONES:";
+
+                    rownu = rownu + 1;
+                    concentrado.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                    concentrado.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    concentrado.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    concentrado.Cells["A" + rownu].Style.Font.Size = 9;
+                    concentrado.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                    concentrado.Cells["A" + rownu].Style.WrapText = true;
+                    concentrado.Row(rownu).Height = rowes;
+                    concentrado.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    concentrado.Cells["A" + rownu].Value = "" + obs1;
+
+                    if (obs2 != "")
+                    {
+                        rownu = rownu + 1;
+                        concentrado.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                        concentrado.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        concentrado.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["A" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["A" + rownu].Style.WrapText = true;
+                        concentrado.Row(rownu).Height = rowes;
+                        concentrado.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["A" + rownu].Value = "" + obs2;
+                    }
+
+                    if (obs3 != "")
+                    {
+                        rownu = rownu + 1;
+                        concentrado.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                        concentrado.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        concentrado.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["A" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["A" + rownu].Style.WrapText = true;
+                        concentrado.Row(rownu).Height = rowes;
+                        concentrado.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["A" + rownu].Value = "" + obs3;
+                    }
+
+                    if (obs4 != "")
+                    {
+                        rownu = rownu + 1;
+                        concentrado.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                        concentrado.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        concentrado.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["A" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["A" + rownu].Style.WrapText = true;
+                        concentrado.Row(rownu).Height = rowes;
+                        concentrado.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["A" + rownu].Value = "" + obs4;
+                    }
+                    if (obs5 != "")
+                    {
+                        rownu = rownu + 1;
+                        concentrado.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                        concentrado.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        concentrado.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        concentrado.Cells["A" + rownu].Style.Font.Size = 9;
+                        concentrado.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                        concentrado.Cells["A" + rownu].Style.WrapText = true;
+                        concentrado.Row(rownu).Height = rowes;
+                        concentrado.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        concentrado.Cells["A" + rownu].Value = "" + obs5;
+                    }
+                }
+
+
+
+                #endregion footerinvoice
+
+
+                #region headerpacking
+              
+
+              
+                query = "SELECT * FROM invoicespl WHERE id =" + idinvo.Text + ";";
+                cm = new SqlCommand(query, con);
+                da = new SqlDataAdapter(cm);
+                dt = new DataTable();
+                da.Fill(dt);
+                cuenta = dt.Rows.Count;
+                if (cuenta > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+
+                        id = "" + row["id"]; folio = "" + row["folio"]; empresa = "" + row["empresa"]; idcli = "" + row["idcli"];
+                        nomcli = "" + row["nomcli"];
+                        callecli = "" + row["callecli"];
+                        numcli = "" + row["numcli"]; numclii = "" + row["numclii"]; colcli = "" + row["colcli"];
+                        muncli = "" + row["muncli"];
+                        edocli = "" + row["edocli"]; paiscli = "" + row["paiscli"];
+                        fecha = "" + row["fecha"]; albaran = "" + row["albaran"];
+                        origdest = "" + row["origdest"]; tot = "" + row["tot"];
+                        currency = "" + row["currency"];
+
+                        obs1 = "" + row["obs1"];
+                        obs2 = "" + row["obs2"];
+                        obs3 = "" + row["obs3"];
+                        obs4 = "" + row["obs4"];
+                        obs5 = "" + row["obs5"];
+                        numee = "" + row["number"];
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Orden no existe");
+                }
+                cm.Dispose(); da.Dispose(); dt.Dispose();
+
+
+                query = "SELECT * FROM empresasipl WHERE id =" + empresa + ";";
+                cm = new SqlCommand(query, con);
+                da = new SqlDataAdapter(cm);
+                dt = new DataTable();
+                da.Fill(dt);
+                cuenta = dt.Rows.Count;
+                if (cuenta > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        ide = "" + row["id"]; nome = "" + row["nom"]; nife = "" + row["nif"]; callee = "" + row["calle"]; nume = "" + row["num"]; numie = "" + row["numi"]; cole = "" + row["col"]; cde = "" + row["cd"]; estadoe = "" + row["estado"]; paise = "" + row["pais"]; cpe = "" + row["cp"];
+                    }
+                }
+                cm.Dispose(); da.Dispose(); dt.Dispose();
+
+
+                query = "SELECT id,cp FROM clientesipl WHERE id =" + idcli + ";";
+                cm = new SqlCommand(query, con);
+                da = new SqlDataAdapter(cm);
+                dt = new DataTable();
+                da.Fill(dt);
+                cuenta = dt.Rows.Count;
+                if (cuenta > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        cpcli = "" + row["cp"];
+                    }
+                }
+                cm.Dispose(); da.Dispose(); dt.Dispose();
+
+                if (currency == "USD") { csymbol = "\"US$\"#,##0.00;-\"US$\"#,##0.00"; }
+                if (currency == "EUR") { csymbol = "\"€\"#,##0.00;-\"€\"#,##0.00"; }
+
+
+                plist.Cells["A1:H1"].Merge = true;
+                plist.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A1"].Style.Font.Size = 16;
+                plist.Cells["A1"].Style.Font.Name = "Calibri";
+                plist.Cells["A1"].Style.Font.Bold = true;
+                plist.Cells["A1"].Value = "" + nome;
+
+
+                plist.Cells["A2:H2"].Merge = true;
+                plist.Cells["A2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["A2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A2"].Style.Font.Size = 9;
+                plist.Cells["A2"].Style.Font.Name = "Calibri";
+                plist.Cells["A2"].Style.WrapText = true;
+                plist.Row(2).Height = 55;
+                plist.Cells["A2"].Value = "TAX ID: " + nife + "\r\nDirección: " + callee + " # " + nume + " " + numie + ", " + cole + ", " + "" + cde + ", " + estadoe + ", " + paise + " C.P.: " + " " + cpe + "";
+
+                plist.Cells["A3:H3"].Merge = true;
+                plist.Cells["A3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["A3"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A3"].Style.Font.Size = 11;
+                plist.Cells["A3"].Style.Font.Name = "Calibri";
+                plist.Cells["A3"].Style.WrapText = true;
+                plist.Row(3).Height = 10;
+                plist.Cells["A3"].Value = "";
+
+
+
+                plist.Cells["A4:H4"].Merge = true;
+                plist.Cells["A4"].Style.Font.Bold = true;
+                plist.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["A4"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A4"].Style.Font.Size = 16;
+                plist.Cells["A4"].Style.Font.Name = "Calibri";
+                plist.Cells["A4"].Style.WrapText = true;
+                plist.Row(5).Height = 20;
+                plist.Cells["A4"].Value = "PACKING LIST";
+
+                /*
+                plist.Cells["A7"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["A7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A7"].Style.Font.Size = 10;
+                plist.Cells["A7"].Style.Font.Name = "Calibri";
+                plist.Cells["A7"].Style.WrapText = true;
+                plist.Row(7).Height = 20;
+                plist.Cells["A7"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["A7"].Value = "BUYER:";
+
+                plist.Cells["A8:A11"].Merge = true;
+                plist.Cells["A8"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["A8"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A8"].Style.Font.Size = 10;
+                plist.Cells["A8"].Style.Font.Name = "Calibri";
+                plist.Cells["A8"].Style.WrapText = true;
+                plist.Cells["A8:A11"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["A8"].Value = "ADDRESS:";
+                */
+
+
+                plist.Cells["A6:E10"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["A6:E6"].Merge = true;
+                plist.Cells["A6"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A6"].Style.Font.Size = 10;
+                plist.Cells["A6"].Style.Font.Name = "Calibri";
+                plist.Cells["A6"].Style.WrapText = true;
+                plist.Cells["A6:E6"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["A6"].Value = "" + nomcli;
+
+
+                plist.Cells["A7:E7"].Merge = true;
+                plist.Cells["A7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A7"].Style.Font.Size = 10;
+                plist.Cells["A7"].Style.Font.Name = "Calibri";
+                plist.Cells["A7"].Style.WrapText = true;
+                plist.Cells["A7"].Value = "" + callecli + " " + numcli + " " + numclii;
+
+                plist.Cells["A8:E8"].Merge = true;
+                plist.Cells["A8"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A8"].Style.Font.Size = 10;
+                plist.Cells["A8"].Style.Font.Name = "Calibri";
+                plist.Cells["A8"].Style.WrapText = true;
+                plist.Cells["A8"].Value = "" + colcli + "";
+
+                plist.Cells["A9:E9"].Merge = true;
+                plist.Cells["A9"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A9"].Style.Font.Size = 10;
+                plist.Cells["A9"].Style.Font.Name = "Calibri";
+                plist.Cells["A9"].Style.WrapText = true;
+                plist.Cells["A9"].Value = "" + muncli + ", " + edocli;
+
+                plist.Cells["A10:E10"].Merge = true;
+                plist.Cells["A10"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A10"].Style.Font.Size = 10;
+                plist.Cells["A10"].Style.Font.Name = "Calibri";
+                plist.Cells["A10"].Style.WrapText = true;
+                plist.Cells["A10"].Value = "" + paiscli + ", C.P.: " + cpcli;
+
+
+                usCulture = new System.Globalization.CultureInfo("en-US");
+                //DateTime result = DateTime.ParseExact("" + fecha.Replace("/","-"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                iDate = "" + fecha;
+                oDate = Convert.ToDateTime(iDate);
+
+                plist.Cells["G6"].Style.Font.Size = 10;
+                plist.Cells["G6"].Style.Font.Name = "Calibri";
+                plist.Cells["G6"].Value = "FECHA: " + oDate.ToString("yyyy-MM-dd");
+
+                plist.Cells["G7"].Style.Font.Size = 10;
+                plist.Cells["G7"].Style.Font.Name = "Calibri";
+                plist.Cells["G7"].Value = "No.: " + numee;
+
+                plist.Cells["G8"].Style.Font.Size = 10;
+                plist.Cells["G8"].Style.Font.Name = "Calibri";
+                plist.Cells["G8"].Value = "FACTURA: " + folio;
+
+                /*
+                string strDate = "" + fecha;
+                DateTimeFormatInfo dtinfo = new DateTimeFormatInfo();
+                dtinfo.ShortDatePattern = "dd,MMM,yyyy";
+                DateTime resultDate = Convert.ToDateTime(strDate, dtinfo);
+                */
+
+
+
+
+                plist.Cells["A12"].Style.Font.Size = 10;
+                plist.Cells["A12"].Style.Font.Name = "Calibri";
+                plist.Cells["A12"].Value = "Per S.S. " + origdest;
+
+
+
+                plist.Cells["A14:A15"].Merge = true;
+                plist.Cells["A14:A15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["A14"].Style.Font.Size = 10;
+                plist.Cells["A14"].Style.Font.Name = "Calibri";
+                plist.Cells["A14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["A14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A14"].Style.WrapText = true;
+                plist.Cells["A14"].Value = "MODEL";
+
+                
+                plist.Cells["B14:B15"].Merge = true;
+                plist.Cells["B14:B15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["B14"].Style.Font.Size = 10;
+                plist.Cells["B14"].Style.Font.Name = "Calibri";
+                plist.Cells["B14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["B14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["B14"].Style.WrapText = true;
+                plist.Cells["B14"].Value = "SIZE";
+                
+
+                plist.Cells["C14:C15"].Merge = true;
+                plist.Cells["C14:C15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["C14"].Style.Font.Size = 10;
+                plist.Cells["C14"].Style.Font.Name = "Calibri";
+                plist.Cells["C14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["C14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["C14"].Style.WrapText = true;
+                plist.Cells["C14"].Value = "UNIT";
+
+
+                plist.Cells["D14:F14"].Merge = true;
+                plist.Cells["D14:F14"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["D14"].Style.Font.Size = 10;
+                plist.Cells["D14"].Style.Font.Name = "Calibri";
+                plist.Cells["D14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["D14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["D14"].Style.WrapText = true;
+                plist.Cells["D14"].Value = "Quantity";
+
+                plist.Cells["D15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["D15"].Style.Font.Size = 10;
+                plist.Cells["D15"].Style.Font.Name = "Calibri";
+                plist.Cells["D15"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["D15"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["D15"].Style.WrapText = true;
+                plist.Cells["D15"].Value = "(PCS)";
+
+                plist.Cells["E15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["E15"].Style.Font.Size = 10;
+                plist.Cells["E15"].Style.Font.Name = "Calibri";
+                plist.Cells["E15"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["E15"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["E15"].Style.WrapText = true;
+                plist.Cells["E15"].Value = "(CTNS)";
+
+                plist.Cells["F15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["F15"].Style.Font.Size = 10;
+                plist.Cells["F15"].Style.Font.Name = "Calibri";
+                plist.Cells["F15"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["F15"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["F15"].Style.WrapText = true;
+                plist.Cells["F15"].Value = "(SQM)";
+
+                /*
+                plist.Cells["G14:G15"].Merge = true;
+                plist.Cells["G14:G15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["G14"].Style.Font.Size = 10;
+                plist.Cells["G14"].Style.Font.Name = "Calibri";
+                plist.Cells["G14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["G14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["G14"].Style.WrapText = true;
+                plist.Cells["G14"].Value = "Unit Price (" + currency + ")";
+                */
+                /*
+                plist.Cells["H14"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["H14"].Style.Font.Size = 10;
+                plist.Cells["H14"].Style.Font.Name = "Calibri";
+                plist.Cells["H14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["H14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["H14"].Style.WrapText = true;
+                plist.Cells["H14"].Value = "TOTAL AMOUNT";
+
+                plist.Cells["H15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["H15"].Style.Font.Size = 10;
+                plist.Cells["H15"].Style.Font.Name = "Calibri";
+                plist.Cells["H15"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["H15"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["H15"].Style.WrapText = true;
+                plist.Cells["H15"].Value = "(" + currency + ")";
+                */
+
+                plist.Cells["H14:H15"].Merge = true;
+                plist.Cells["H14:H15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["H14"].Style.Font.Size = 10;
+                plist.Cells["H14"].Style.Font.Name = "Calibri";
+                plist.Cells["H14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["H14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["H14"].Style.WrapText = true;
+                plist.Cells["H14"].Value = "CONTAINERS";
+
+
+                plist.Cells["G14:G15"].Merge = true;
+                plist.Cells["G14:G15"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["G14"].Style.Font.Size = 10;
+                plist.Cells["G14"].Style.Font.Name = "Calibri";
+                plist.Cells["G14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["G14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["G14"].Style.WrapText = true;
+                plist.Cells["G14"].Value = "PALLETS";
+
+                #endregion headerpacking
+
+                #region builderpacking
+                rownu = 16; contu = 1; rowni = 16;
+                caja = ""; mtscaja = ""; kgspiece = ""; kgscaja = ""; sku = "";
+                pallets = 0;
+                pallet = "";
+                ctns = 0; sqm = 0; tctns = 0; tsqm = 0; cajad = 0; mtsd = 0;
+                int cuentacon = 0;
+                size = "";
+                        //ide = "" + row["id"]; nome = "" + row["nom"]; nife = "" + row["nif"]; callee = "" + row["calle"]; nume = "" + row["num"]; numie = "" + row["numi"]; cole = "" + row["col"]; cde = "" + row["cd"]; estadoe = "" + row["estado"]; paise = "" + row["pais"]; cpe = "" + row["cp"];
+                        //ord, cant, clave, ume, pu, importe, container
+                        queryc = "SELECT container FROM containersipl WHERE ord ='" + id + "' ORDER BY container ASC;";
+                        cmc = new SqlCommand(queryc, con);
+                        dac = new SqlDataAdapter(cmc);
+                        dtc = new DataTable();
+                        dac.Fill(dtc);
+                        cuentac = dtc.Rows.Count;
+                        if (cuentac > 0)
+                        {
+                            foreach (DataRow rowc in dtc.Rows)
+                            {
+
+
+                        string querycp = "SELECT * FROM rowsipl WHERE ord ='" + id + "' AND container='" + rowc["container"] + "' ORDER BY id ASC;";
+                                SqlCommand cmcp = new SqlCommand(querycp, con);
+                                SqlDataAdapter dacp = new SqlDataAdapter(cmcp);
+                                DataTable dtcp = new DataTable();
+                                dacp.Fill(dtcp);
+                                int cuentacp = dtcp.Rows.Count;
+                                if (cuentacp > 0)
+                                {
+
+                            //rowspan de todas las filas en el SET
+                            //MessageBox.Show("I" + (rownu) + ":I" + (cuentacp + rownu - 1) + "");
+                            plist.Cells["H" + (rownu) + ":H" + (cuentacp + rownu - 1) + ""].Merge = true;
+                            plist.Cells["H" + (rownu) + ":H" + (cuentacp + rownu - 1) + ""].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                            plist.Cells["H" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            plist.Cells["H" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                            plist.Cells["H" + rownu].Style.Font.Size = 8;
+                            plist.Cells["H" + rownu].Style.Font.Name = "Calibri";
+                            plist.Cells["H" + rownu].Style.WrapText = true;
+                            plist.Cells["H" + rownu].Value = "" + rowc["container"];
+
+
+                            
+                                    cuentacon = cuentacon + 1;
+                                    foreach (DataRow rowcp in dtcp.Rows)
+                                    {
+                                //IMPRESION DE PARTIDAS
+                                string querya = "SELECT * FROM artsipl WHERE clave ='" + rowcp["clave"] + "';";
+                                SqlCommand cma = new SqlCommand(querya, con);
+                                SqlDataAdapter daa = new SqlDataAdapter(cma);
+                                DataTable dta = new DataTable();
+                                daa.Fill(dta);
+                                int cuentaa = dta.Rows.Count;
+                                if (cuentaa > 0)
+                                {
+                                    foreach (DataRow rowa in dta.Rows)
+                                    {
+                                        size = "" + rowa["size"];
+                                        caja = "" + rowa["caja"]; mtscaja = "" + rowa["mtscaja"]; kgspiece = "" + rowa["kgspiece"];
+                                        kgscaja = "" + rowa["kgscaja"]; sku = "" + rowa["size"];
+                                        pallet = "" + rowa["pallet"];
+                                    }
+
+                                }
+                                cma.Dispose(); daa.Dispose(); dta.Dispose();
+
+                                //IMPRESION DE PARTIDAS
+                                        plist.Cells["A" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                        plist.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                        plist.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                                        plist.Cells["A" + rownu].Style.Font.Size = 9;
+                                        plist.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                                        plist.Cells["A" + rownu].Style.WrapText = true;
+                                        plist.Cells["A" + rownu].Value = rowcp["clave"];
+
+                                
+                                        plist.Cells["B" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                        plist.Cells["B" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                        plist.Cells["B" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                                        plist.Cells["B" + rownu].Style.Font.Size = 9;
+                                        plist.Cells["B" + rownu].Style.Font.Name = "Calibri";
+                                        plist.Cells["B" + rownu].Style.WrapText = true;
+                                        plist.Cells["B" + rownu].Value = "" + size;
+
+
+                                        sqm = 0;
+                                        tctns = 0;
+                                        tsqm = 0;
+                                        cajad = 0;
+                                        mtsd = 0;
+
+                                        try { ctns = double.Parse("" + caja); }
+                                        catch { ctns = 0; }
+
+                                        try { sqm = double.Parse("" + mtscaja); }
+                                        catch { sqm = 0; }
+
+                                        try { pallets = double.Parse("" + pallet); }
+                                        catch { pallets = 0; }
+
+                                        try
+                                        {
+                                            tctns =  double.Parse("" + rowcp["cant"]) / ctns;
+                                        }
+                                        catch { tctns = 0; }
+
+                                        try
+                                        {
+                                            tsqm = sqm * tctns;
+                                        }
+                                        catch { tsqm = 0; }
+
+                                            try
+                                            {
+                                                pallets  = double.Parse("" + rowcp["cant"]) / pallets;
+                                            }
+                                            catch { pallets = 1; }
+                                            if(pallets < 1) { pallets = 1; }
+                                            if (pallets.ToString() == "∞") { pallets = 0; }
+                                        //MessageBox.Show(" palle: " + pallets);
+                                        
+                                plist.Cells["C" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                        plist.Cells["C" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                        plist.Cells["C" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                                        plist.Cells["C" + rownu].Style.Font.Size = 9;
+                                        plist.Cells["C" + rownu].Style.Font.Name = "Calibri";
+                                        plist.Cells["C" + rownu].Style.WrapText = true;
+                                        plist.Cells["C" + rownu].Value = "" + rowcp["ume"];
+
+                                        plist.Cells["D" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                        plist.Cells["D" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                        plist.Cells["D" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                                        plist.Cells["D" + rownu].Style.Font.Size = 9;
+                                        plist.Cells["D" + rownu].Style.Font.Name = "Calibri";
+                                        plist.Cells["D" + rownu].Style.WrapText = true;
+                                        plist.Cells["D" + rownu].Style.Numberformat.Format = "##0.00";
+                                        plist.Cells["D" + rownu].Value = double.Parse("" + rowcp["cant"]);
+
+                                        plist.Cells["E" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                        plist.Cells["E" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                        plist.Cells["E" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                                        plist.Cells["E" + rownu].Style.Font.Size = 9;
+                                        plist.Cells["E" + rownu].Style.Font.Name = "Calibri";
+                                        plist.Cells["E" + rownu].Style.WrapText = true;
+                                        plist.Cells["E" + rownu].Style.Numberformat.Format = "##0.00";
+                                        plist.Cells["E" + rownu].Value = double.Parse("" + tctns);
+
+                                        plist.Cells["F" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                        plist.Cells["F" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                        plist.Cells["F" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                                        plist.Cells["F" + rownu].Style.Font.Size = 9;
+                                        plist.Cells["F" + rownu].Style.Font.Name = "Calibri";
+                                        plist.Cells["F" + rownu].Style.WrapText = true;
+                                        plist.Cells["F" + rownu].Style.Numberformat.Format = "#,##0.00";
+                                        plist.Cells["F" + rownu].Value = double.Parse("" + tsqm);
+
+                               
+                                        plist.Cells["G" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                        plist.Cells["G" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                        plist.Cells["G" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                                        plist.Cells["G" + rownu].Style.Font.Size = 9;
+                                        plist.Cells["G" + rownu].Style.Font.Name = "Calibri";
+                                        plist.Cells["G" + rownu].Style.WrapText = true;
+                                        plist.Cells["G" + rownu].Style.Numberformat.Format = "#,##0";
+                                        plist.Cells["G" + rownu].Value = double.Parse("" + pallets);
+                                /*
+                                       plist.Cells["H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                                       plist.Cells["H" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                       plist.Cells["H" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                                       plist.Cells["H" + rownu].Style.Font.Size = 9;
+                                       plist.Cells["H" + rownu].Style.Font.Name = "Calibri";
+                                       plist.Cells["H" + rownu].Style.WrapText = true;
+                                       plist.Cells["H" + rownu].Style.Numberformat.Format = "" + csymbol;
+                                       plist.Cells["H" + rownu].Value = double.Parse("" + rowcp["importe"]);
+                                */
+                                rownu = rownu + 1; contu = contu + 1;
+                                    }
+                                    dacp.Dispose();dtcp.Dispose(); cmcp.Dispose();
+                                    //FIN DE IMPRESION DE PARTIDAS
+                                }
+                            }
+                        }
+                        dac.Dispose();dtc.Dispose();cmc.Dispose();
+
+                #endregion builerpacking
+
+                #region footerpacking
+
+
+                rowf = rownu;
+                if (rowf > rowni)
+                {
+                    rowf = rowf - 1;
+                }
+                rownu = rownu + 1;
+                plist.Cells["A" + rownu + ":C" + rownu].Merge = true;
+                plist.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["A" + rownu].Style.Font.Size = 9;
+                plist.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                plist.Cells["A" + rownu].Style.WrapText = true;
+                plist.Row(rownu).Height = 20;
+                plist.Cells["A" + rownu + ":C" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["A" + rownu].Value = "TOTAL";
+
+                plist.Cells["D" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["D" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["D" + rownu].Style.Font.Size = 9;
+                plist.Cells["D" + rownu].Style.Font.Name = "Calibri";
+                plist.Cells["D" + rownu].Style.WrapText = true;
+                plist.Cells["D" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["D" + rownu].Style.Numberformat.Format = "##0.00";
+                plist.Cells["D" + rownu].Formula = "=SUM(D" + rowni + ":D" + rowf + ")";
+
+
+                plist.Cells["E" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["E" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["E" + rownu].Style.Font.Size = 9;
+                plist.Cells["E" + rownu].Style.Font.Name = "Calibri";
+                plist.Cells["E" + rownu].Style.WrapText = true;
+                plist.Cells["E" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["E" + rownu].Style.Numberformat.Format = "##0.00";
+                plist.Cells["E" + rownu].Formula = "=SUM(E" + rowni + ":E" + rowf + ")";
+
+                plist.Cells["F" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["F" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["F" + rownu].Style.Font.Size = 9;
+                plist.Cells["F" + rownu].Style.Font.Name = "Calibri";
+                plist.Cells["F" + rownu].Style.WrapText = true;
+                plist.Cells["F" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["F" + rownu].Style.Numberformat.Format = "##0.00";
+                plist.Cells["F" + rownu].Formula = "=SUM(F" + rowni + ":F" + rowf + ")";
+
+                plist.Cells["G" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["G" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["G" + rownu].Style.Font.Size = 9;
+                plist.Cells["G" + rownu].Style.Font.Name = "Calibri";
+                plist.Cells["G" + rownu].Style.WrapText = true;
+                plist.Cells["G" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["G" + rownu].Style.Numberformat.Format = "##0.00";
+                plist.Cells["G" + rownu].Formula = "=SUM(G" + rowni + ":G" + rowf + ")";
+
+                plist.Cells["H" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                plist.Cells["H" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                plist.Cells["H" + rownu].Style.Font.Size = 9;
+                plist.Cells["H" + rownu].Style.Font.Name = "Calibri";
+                plist.Cells["H" + rownu].Style.WrapText = true;
+                plist.Cells["H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                plist.Cells["H" + rownu].Style.Numberformat.Format = "" + csymbol;
+                //plist.Cells["H" + rownu].Formula = "=SUM(H" + rowni + ":H" + rowf + ")";
+
+
+
+
+
+
+                if (obs1 != "")
+                {
+                    int rowes = 32;
+                    rownu = rownu + 2;
+                    plist.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                    plist.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    plist.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    plist.Cells["A" + rownu].Style.Font.Size = 9;
+                    plist.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                    plist.Cells["A" + rownu].Style.Font.Bold = true;
+                    plist.Cells["A" + rownu].Style.WrapText = true;
+                    plist.Row(rownu).Height = 15;
+                    plist.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    plist.Cells["A" + rownu].Value = "OBSERVACIONES:";
+
+                    rownu = rownu + 1;
+                    plist.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                    plist.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    plist.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    plist.Cells["A" + rownu].Style.Font.Size = 9;
+                    plist.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                    plist.Cells["A" + rownu].Style.WrapText = true;
+                    plist.Row(rownu).Height = rowes;
+                    plist.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    plist.Cells["A" + rownu].Value = "" + obs1;
+
+                    if (obs2 != "")
+                    {
+                        rownu = rownu + 1;
+                        plist.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                        plist.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        plist.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        plist.Cells["A" + rownu].Style.Font.Size = 9;
+                        plist.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                        plist.Cells["A" + rownu].Style.WrapText = true;
+                        plist.Row(rownu).Height = rowes;
+                        plist.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        plist.Cells["A" + rownu].Value = "" + obs2;
+                    }
+
+                    if (obs3 != "")
+                    {
+                        rownu = rownu + 1;
+                        plist.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                        plist.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        plist.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        plist.Cells["A" + rownu].Style.Font.Size = 9;
+                        plist.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                        plist.Cells["A" + rownu].Style.WrapText = true;
+                        plist.Row(rownu).Height = rowes;
+                        plist.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        plist.Cells["A" + rownu].Value = "" + obs3;
+                    }
+
+                    if (obs4 != "")
+                    {
+                        rownu = rownu + 1;
+                        plist.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                        plist.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        plist.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        plist.Cells["A" + rownu].Style.Font.Size = 9;
+                        plist.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                        plist.Cells["A" + rownu].Style.WrapText = true;
+                        plist.Row(rownu).Height = rowes;
+                        plist.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        plist.Cells["A" + rownu].Value = "" + obs4;
+                    }
+                    if (obs5 != "")
+                    {
+                        rownu = rownu + 1;
+                        plist.Cells["A" + rownu + ":H" + rownu].Merge = true;
+                        plist.Cells["A" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        plist.Cells["A" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        plist.Cells["A" + rownu].Style.Font.Size = 9;
+                        plist.Cells["A" + rownu].Style.Font.Name = "Calibri";
+                        plist.Cells["A" + rownu].Style.WrapText = true;
+                        plist.Row(rownu).Height = rowes;
+                        plist.Cells["A" + rownu + ":H" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        plist.Cells["A" + rownu].Value = "" + obs5;
+                    }
+                }
+
+
+
+                #endregion footerpacking

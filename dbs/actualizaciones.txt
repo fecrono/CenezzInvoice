@@ -1,0 +1,22 @@
+EN ARTSIPL "sizel" para las medidas de las piezas CON VALOR DEFAULT "0"
+paso 1)
+
+ALTER TABLE artsipl
+ADD sizel varchar(254)
+NOT NULL DEFAULT('0');
+
+
+
+EN CONTAINERSIPL agregar el campo "precinto" con valor default "SIN PRECINTO" 
+paso 2)
+
+ALTER TABLE containersipl
+ADD precinto varchar(254)
+NOT NULL DEFAULT('SIN PRECINTO');
+
+
+
+
+ALTER TABLE rowsipl
+ADD pallets varchar(254)
+NOT NULL DEFAULT('0.0');
