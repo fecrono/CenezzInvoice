@@ -282,7 +282,7 @@ namespace CenezzInvoice
 
                 string adesc, clave, price, umes = "", contain,pallet="";
                 clave = "" + cveadd.Text;
-                double acant1 = 0, aprecio1 = 0, totalon = 0, pallets = 0, kgscaja = 0, kilos = 0,metros=0, cajas=0;
+                double acant1 = 0, aprecio1 = 0, kgspiece=0, totalon = 0, pallets = 0, kgscaja = 0, kilos = 0,metros=0, cajas=0;
 
 
                 acant1 = Math.Round(double.Parse(cantadd.Text), 2, MidpointRounding.AwayFromZero);
@@ -301,6 +301,7 @@ namespace CenezzInvoice
                         aprecio1 = Math.Round(double.Parse("" + rowp["precio"]), deci, MidpointRounding.AwayFromZero);
                         umes = "" + rowp["ume"];
                         pallet = "" + rowp["pallet"];
+                        kgspiece = Math.Round(double.Parse("" + rowp["kgspiece"]), 2, MidpointRounding.AwayFromZero);
                         kgscaja = Math.Round(double.Parse("" + rowp["kgscaja"]), 2, MidpointRounding.AwayFromZero);
                         metros = Math.Round(double.Parse("" + rowp["mtscaja"]), 2, MidpointRounding.AwayFromZero);
                         //kilos = Math.Round(double.Parse("" + rowp["precio"]), 2, MidpointRounding.AwayFromZero);
@@ -351,6 +352,14 @@ namespace CenezzInvoice
                 try
                 {
                     kilos = double.Parse("" + cajas) * kgscaja;
+                    if (kilos == 0)
+                    {
+                        kilos = double.Parse("" + acant1) * kgspiece;
+                    }
+                    if (kilos == 0)
+                    {
+                        kilos = 0;
+                    }
                 }
                 catch { kilos = 1; }
                 //if (pallets < 1) { pallets = 1; }
@@ -378,7 +387,7 @@ namespace CenezzInvoice
                 {
                     dblSuma += Convert.ToDouble(item.SubItems[7].Text);
                 }
-                neto.Text = "" + dblSuma.ToString("n" + +deci );
+                neto.Text = "" + dblSuma.ToString("n"  + deci );
                 dblSuma = 0;
 
                 //obtener peso bruto

@@ -1160,6 +1160,7 @@
             0,
             0,
             0});
+            this.deces.Visible = false;
             this.deces.ValueChanged += new System.EventHandler(this.deces_ValueChanged);
             // 
             // label22
@@ -1171,6 +1172,7 @@
             this.label22.Size = new System.Drawing.Size(69, 13);
             this.label22.TabIndex = 310;
             this.label22.Text = "Decimales:";
+            this.label22.Visible = false;
             // 
             // add
             // 

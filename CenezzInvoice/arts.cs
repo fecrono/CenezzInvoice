@@ -17,9 +17,15 @@ namespace CenezzInvoice
         {
             InitializeComponent();
         }
-        internal static string invoice_query = "SELECT  clave AS Clave, descr AS [Descripión], FORMAT( convert(numeric(18,5),replace(precio,',','')),'###,###,###.00000','ES-mx') AS [P.Venta], linea AS Linea, ume  AS [U.Medida], id FROM artsipl ORDER BY linea,clave ASC ";
-        internal static string invoice_querys = "SELECT  clave AS Clave, descr AS [Descripión], FORMAT(convert(numeric(18,5),replace(precio,',','')),'###,###,###.00000','ES-mx') AS [P.Venta], linea AS Linea, ume  AS [U.Medida], id FROM artsipl ";
+        //internal static string invoice_query = "SELECT  clave AS Clave, descr AS [Descripión], FORMAT( convert(numeric(18,5),replace(precio,',','')),'###,###,###.00000','ES-mx') AS [P.Venta], linea AS Linea, ume  AS [U.Medida], id FROM artsipl ORDER BY linea,clave ASC ";
+        //internal static string invoice_querys = "SELECT  clave AS Clave, descr AS [Descripión], FORMAT(convert(numeric(18,5),replace(precio,',','')),'###,###,###.00000','ES-mx') AS [P.Venta], linea AS Linea, ume  AS [U.Medida], id FROM artsipl ";
         //internal static string invoice_query = "SELECT  clave AS Clave, descr AS [Descripión], precio AS [P.Venta], linea AS Linea, ume  AS [U.Medida], caja, mtscaja, kgspiece, kgscaja, costo AS Costo, id FROM artsipl ORDER BY clave ASC";
+
+        internal static string invoice_query = "SELECT  clave AS Clave, descr AS [Descripión], precio AS [P.Venta], linea AS Linea, ume  AS [U.Medida], id FROM artsipl ORDER BY linea,clave ASC ";
+        internal static string invoice_querys = "SELECT  clave AS Clave, descr AS [Descripión],precio AS [P.Venta], linea AS Linea, ume  AS [U.Medida], id FROM artsipl ";
+
+
+
 
         private void arts_Load(object sender, EventArgs e)
         {
@@ -513,6 +519,7 @@ namespace CenezzInvoice
 
         private void skue_KeyPress(object sender, KeyPressEventArgs e)
         {
+            /*
             // Verify that the pressed key isn't CTRL or any non-numeric digit
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
@@ -523,6 +530,7 @@ namespace CenezzInvoice
             {
                 e.Handled = true;
             }
+            */
         }
 
         private void precioe_KeyPress(object sender, KeyPressEventArgs e)
@@ -611,6 +619,7 @@ namespace CenezzInvoice
 
         private void sku_KeyPress(object sender, KeyPressEventArgs e)
         {
+            /*
             // Verify that the pressed key isn't CTRL or any non-numeric digit
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
@@ -621,6 +630,7 @@ namespace CenezzInvoice
             {
                 e.Handled = true;
             }
+            */
         }
 
         private void precio_KeyPress(object sender, KeyPressEventArgs e)
@@ -777,7 +787,7 @@ namespace CenezzInvoice
                     string range = " WHERE id =" + uuid + ";";
                     //range = " WHERE CAST(fecha AS DATE) >= CAST('" + inicial + "'  AS DATE) AND CAST(fecha AS DATE) <= CAST('" + final + "' AS DATE)";
                     SqlDataAdapter DA = new SqlDataAdapter();
-                    string sqlSelectAll = "SELECT  clave AS Clave, descr AS [Descripión], FORMAT(precio,'N5') AS [P.Venta], linea AS Linea, ume  AS [U.Medida], id FROM artsipl  " + range + "";
+                    string sqlSelectAll = "SELECT  clave AS Clave, descr AS [Descripión], precio AS [P.Venta], linea AS Linea, ume  AS [U.Medida], id FROM artsipl  " + range + "";
                     DA.SelectCommand = new SqlCommand(sqlSelectAll, con);
 
                     DataTable table = new DataTable();

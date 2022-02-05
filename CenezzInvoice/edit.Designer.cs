@@ -138,9 +138,12 @@
             this.label28 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.deces = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.deces)).BeginInit();
             this.SuspendLayout();
             // 
             // idadded
@@ -266,7 +269,7 @@
             // button5
             // 
             this.button5.Image = ((System.Drawing.Image)(resources.GetObject("button5.Image")));
-            this.button5.Location = new System.Drawing.Point(731, 32);
+            this.button5.Location = new System.Drawing.Point(727, 7);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(196, 71);
             this.button5.TabIndex = 143;
@@ -299,7 +302,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(731, 106);
+            this.button1.Location = new System.Drawing.Point(727, 81);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(196, 23);
             this.button1.TabIndex = 140;
@@ -1199,11 +1202,48 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Editar partida";
             // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.Location = new System.Drawing.Point(817, 109);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(69, 13);
+            this.label23.TabIndex = 312;
+            this.label23.Text = "Decimales:";
+            this.label23.Visible = false;
+            // 
+            // deces
+            // 
+            this.deces.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deces.Location = new System.Drawing.Point(889, 105);
+            this.deces.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.deces.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.deces.Name = "deces";
+            this.deces.Size = new System.Drawing.Size(32, 20);
+            this.deces.TabIndex = 311;
+            this.deces.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.deces.Visible = false;
+            // 
             // editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1048, 591);
+            this.Controls.Add(this.label23);
+            this.Controls.Add(this.deces);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.states);
             this.Controls.Add(this.addrows);
@@ -1266,6 +1306,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.deces)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1381,5 +1422,7 @@
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.NumericUpDown deces;
     }
 }

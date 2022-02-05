@@ -105,7 +105,7 @@ namespace CenezzInvoice
             //here i checked number of rows of dt1 and it shows the correct value
         }
 
-        internal static string invoice_query = "SELECT folio AS FOLIO, number AS NUM,empresa AS #Emp, idcli AS #Cli,nomcli AS Nombre, paiscli AS Pais, fecha as Fecha, albaran as Albaran, origdest as [Origen Destino],FORMAT( convert(numeric(18,5),replace(tot,',','')),'###,###,###.00000','ES-mx') AS Total, currency as Moneda ,id,stats AS [Status] FROM invoicespl";
+        internal static string invoice_query = "SELECT folio AS FOLIO, number AS NUM,empresa AS #Emp, idcli AS #Cli,nomcli AS Nombre, paiscli AS Pais, fecha as Fecha, albaran as Albaran, origdest as [Origen Destino],tot AS Total, currency as Moneda ,id,stats AS [Status] FROM invoicespl";
 
 
         private void list_KeyUp(object sender, KeyEventArgs e)
@@ -244,7 +244,8 @@ namespace CenezzInvoice
                 if (currency == "USD") { csymbol = "\"US$\"#,##0.00;-\"US$\"#,##0.00"; }
                 if (currency == "EUR") { csymbol = "\"\"#,##0.00€;-\"\"#,##0.00€"; }
                 if (currency == "") { csymbol = "\"\"#,##0.00;-\"\"#,##0.00"; }
-
+                string cunid = "";
+                
                 proforma.Cells["A1:I1"].Merge = true;
                 proforma.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 proforma.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
@@ -508,7 +509,7 @@ namespace CenezzInvoice
                 proforma.Cells["F14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 proforma.Cells["F14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 proforma.Cells["F14"].Style.WrapText = true;
-                proforma.Cells["F14"].Value = "M²";
+                proforma.Cells["F14"].Value = "UNID";
 
 
                 proforma.Cells["G14"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -586,8 +587,7 @@ namespace CenezzInvoice
 
                         }
                         cma.Dispose(); daa.Dispose(); dta.Dispose();
-
-
+                        cunid = "\"\"#,##0.00 \"" + units + "\";-\"\"#,##0.00 \"" + units+ "\"";
 
                         //ide = "" + row["id"]; nome = "" + row["nom"]; nife = "" + row["nif"]; callee = "" + row["calle"]; nume = "" + row["num"]; numie = "" + row["numi"]; cole = "" + row["col"]; cde = "" + row["cd"]; estadoe = "" + row["estado"]; paise = "" + row["pais"]; cpe = "" + row["cp"];
                         //ord, cant, clave, ume, pu, importe, container
@@ -598,8 +598,16 @@ namespace CenezzInvoice
                         proforma.Cells["A" + rownu].Style.Font.Size = 9;
                         proforma.Cells["A" + rownu].Style.Font.Name = "Calibri";
                         proforma.Cells["A" + rownu].Style.WrapText = true;
-                        proforma.Cells["A" + rownu].Value = "" + size + "X" + sizel;
 
+
+                        if (sizel == "")
+                        {
+                            proforma.Cells["A" + rownu].Value = "" + size + "" + sizel;
+                        }
+                        else
+                        {
+                            proforma.Cells["A" + rownu].Value = "" + size + "X" + sizel;
+                        }
                         proforma.Cells["B" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         proforma.Cells["B" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         proforma.Cells["B" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
@@ -653,9 +661,12 @@ namespace CenezzInvoice
                             pieces = (ctns * double.Parse("" + row["cant"])) / sqm;
                         }
                         catch {
-                            pieces = 0;
+                            pieces = double.Parse("" + row["cant"]);
                         }
-
+                        if (pieces.ToString() == "∞")
+                        {
+                            pieces = double.Parse("" + row["cant"]);
+                        }
 
                         try
                         {
@@ -682,13 +693,16 @@ namespace CenezzInvoice
                             //if (pallets < 1) { pallets = 1; }
                             if (pallets.ToString() == "∞") { pallets = 0; }
                         }
+
+
                         try {
                             cajad = double.Parse("" + row["cant"]) / sqm;
                         }
                         catch { cajad = 0; }
-
-
-
+                        if (cajad.ToString() == "∞") { 
+                            cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
+                        }
+                        
                         proforma.Cells["D" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         proforma.Cells["D" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         proforma.Cells["D" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
@@ -705,7 +719,7 @@ namespace CenezzInvoice
                         proforma.Cells["E" + rownu].Style.Font.Size = 9;
                         proforma.Cells["E" + rownu].Style.Font.Name = "Calibri";
                         proforma.Cells["E" + rownu].Style.WrapText = true;
-                        proforma.Cells["E" + rownu].Style.Numberformat.Format = "#,##0";
+                        proforma.Cells["E" + rownu].Style.Numberformat.Format = "#,##0.0";
                         proforma.Cells["E" + rownu].Value = double.Parse("" + cajad);
 
                         proforma.Cells["F" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -714,7 +728,7 @@ namespace CenezzInvoice
                         proforma.Cells["F" + rownu].Style.Font.Size = 9;
                         proforma.Cells["F" + rownu].Style.Font.Name = "Calibri";
                         proforma.Cells["F" + rownu].Style.WrapText = true;
-                        proforma.Cells["F" + rownu].Style.Numberformat.Format = "#,##0.00";
+                        proforma.Cells["F" + rownu].Style.Numberformat.Format = "" + cunid;
                         proforma.Cells["F" + rownu].Value = double.Parse("" + row["cant"]);
 
                         proforma.Cells["G" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -964,7 +978,7 @@ namespace CenezzInvoice
                 proforma.Cells["F" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 proforma.Cells["F" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 proforma.Cells["F" + rownu].Style.WrapText = true;
-                proforma.Cells["F" + rownu].Value = "M²";
+                proforma.Cells["F" + rownu].Value = "UNID";
 
 
                 proforma.Cells["G" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -1752,7 +1766,7 @@ namespace CenezzInvoice
                 plist2.Cells["F14"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 plist2.Cells["F14"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 plist2.Cells["F14"].Style.WrapText = true;
-                plist2.Cells["F14"].Value = "M²";
+                plist2.Cells["F14"].Value = "UNID";
 
 
                 plist2.Cells["G14"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -1857,7 +1871,14 @@ namespace CenezzInvoice
                                 plist2.Cells["A" + rownu].Style.Font.Size = 9;
                                 plist2.Cells["A" + rownu].Style.Font.Name = "Calibri";
                                 plist2.Cells["A" + rownu].Style.WrapText = true;
-                                plist2.Cells["A" + rownu].Value = "" + size + "X" + sizel ;
+                                if (sizel == "")
+                                {
+                                    plist2.Cells["A" + rownu].Value = "" + size + "" + sizel;
+                                }
+                                else
+                                {
+                                    plist2.Cells["A" + rownu].Value = "" + size + "X" + sizel;
+                                }
 
                                 plist2.Cells["B" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                                 plist2.Cells["B" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -1925,8 +1946,13 @@ namespace CenezzInvoice
                                 }
                                 catch
                                 {
-                                    pieces = 0;
+                                    pieces = double.Parse("" + row["cant"]);
                                 }
+                                if (pieces.ToString() == "∞")
+                                {
+                                    pieces = double.Parse("" + row["cant"]);
+                                }
+
 
                                 if (row["pallets"].ToString() != "")
                                 {
@@ -1947,6 +1973,11 @@ namespace CenezzInvoice
                                     cajad = double.Parse("" + row["cant"]) / sqm;
                                 }
                                 catch { cajad = 0; }
+
+                                if (cajad.ToString() == "∞") {
+                                    cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
+                                }
+
 
                                 kilosnetos = 0;  kilosbrutos = 0;
 
@@ -1970,7 +2001,7 @@ namespace CenezzInvoice
                                 plist2.Cells["E" + rownu].Style.Font.Size = 9;
                                 plist2.Cells["E" + rownu].Style.Font.Name = "Calibri";
                                 plist2.Cells["E" + rownu].Style.WrapText = true;
-                                plist2.Cells["E" + rownu].Style.Numberformat.Format = "#,##0";
+                                plist2.Cells["E" + rownu].Style.Numberformat.Format = "#,##0.0";
                                 plist2.Cells["E" + rownu].Value = double.Parse("" + cajad);
 
                                 plist2.Cells["F" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -1979,7 +2010,7 @@ namespace CenezzInvoice
                                 plist2.Cells["F" + rownu].Style.Font.Size = 9;
                                 plist2.Cells["F" + rownu].Style.Font.Name = "Calibri";
                                 plist2.Cells["F" + rownu].Style.WrapText = true;
-                                plist2.Cells["F" + rownu].Style.Numberformat.Format = "#,##0.00";
+                                plist2.Cells["F" + rownu].Style.Numberformat.Format = "" + cunid;
                                 plist2.Cells["F" + rownu].Value = double.Parse("" + row["cant"]);
 
                                 plist2.Cells["G" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -2140,7 +2171,7 @@ namespace CenezzInvoice
                 plist2.Cells["F" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 plist2.Cells["F" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 plist2.Cells["F" + rownu].Style.WrapText = true;
-                plist2.Cells["F" + rownu].Value = "M²";
+                plist2.Cells["F" + rownu].Value = "UNID";
 
 
                 plist2.Cells["G" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
@@ -3085,7 +3116,8 @@ namespace CenezzInvoice
                         gfx.DrawString("CLASE", ocho, XBrushes.Black, new XRect(156, y, 100, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PALLETS", ocho, XBrushes.Black, new XRect(198, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("CAJAS", ocho, XBrushes.Black, new XRect(253, y, 50, 25), XStringFormats.TopLeft);
-                        gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                        //gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                        gfx.DrawString("UNID", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PIEZAS", ocho, XBrushes.Black, new XRect(357, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("" + currency, ocho, XBrushes.Black, new XRect(430, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("" + currency, ocho, XBrushes.Black, new XRect(535, y, 50, 25), XStringFormats.TopLeft);
@@ -3223,14 +3255,17 @@ namespace CenezzInvoice
                                         try { pallets = double.Parse("" + pallet); }
                                         catch { pallets = 0; }
 
-
+                                        pieces = double.Parse("" + row["cant"]);
                                         try
                                         {
                                             pieces = (ctns * double.Parse("" + row["cant"])) / sqm;
+                                            if (pieces.ToString() == "∞"){
+                                                pieces = double.Parse("" + row["cant"]);
+                                            }
                                         }
                                         catch
                                         {
-                                            pieces = 0;
+                                            pieces = double.Parse("" + row["cant"]);
                                         }
 
 
@@ -3238,8 +3273,24 @@ namespace CenezzInvoice
                                         {
                                             tctns = double.Parse("" + row["cant"]) / sqm;
                                         }
-                                        catch { tctns = 0; }
+                                        catch {
+                                            tctns = 0;
+                                                tctns = double.Parse("" + row["cant"]) / double.Parse("" + caja);
+                                        }
 
+
+                                        if (tctns.ToString() == "∞")
+                                        {
+                                            try
+                                            {
+                                                tctns = double.Parse("" + row["cant"]) / double.Parse("" + caja);
+                                            }
+                                            catch
+                                            {
+                                                tctns = 0;
+                                            }
+                                        }
+                                        //MessageBox.Show("" + tctns + " " + double.Parse("" + row["cant"]) + " " + double.Parse("" + caja));
                                         try
                                         {
                                             tsqm = sqm * tctns;
@@ -3265,6 +3316,10 @@ namespace CenezzInvoice
                                         }
                                         catch { cajad = 0; }
 
+                                        if (cajad.ToString() == "∞") {
+                                            cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
+                                        }
+
 
 
                                         if (contadoarr < cuentaprod - 1)
@@ -3282,13 +3337,29 @@ namespace CenezzInvoice
                                         //gfx.DrawString("" + row["pallets"], ocho, XBrushes.Black, new XRect(505, y, 50, 25), XStringFormats.TopLeft);
                                         //gfx.DrawString("" + row["pallets"], ocho, XBrushes.Black, new XRect(505, y, 50, 25), XStringFormats.TopLeft);
                                         tf.Alignment = XParagraphAlignment.Right;
-                                        gfx.DrawString("" + size + "X" + sizel, ocho, XBrushes.Black, new XRect(20, y, 100, 25), XStringFormats.TopLeft);
+
+                                        if (sizel == "")
+                                        {
+                                            gfx.DrawString("" + size + "" + sizel, ocho, XBrushes.Black, new XRect(20, y, 100, 25), XStringFormats.TopLeft);
+                                        }
+                                        else
+                                        {
+                                            gfx.DrawString("" + size + "X" + sizel, ocho, XBrushes.Black, new XRect(20, y, 100, 25), XStringFormats.TopLeft);
+                                        }
+
                                         gfx.DrawString("" + row["clave"].ToString(), SIETE, XBrushes.Black, new XRect(60, y, 100, 25), XStringFormats.TopLeft);
                                         gfx.DrawString("1", ocho, XBrushes.Black, new XRect(163, y, 100, 25), XStringFormats.TopLeft);
                                         tf.DrawString("" + pallets.ToString("n2"), ocho, XBrushes.Black, new XRect(175, y, 50, 25), XStringFormats.TopLeft);
-                                        tf.DrawString("" + Convert.ToInt32(tctns).ToString("N0"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
-                                        tf.DrawString("" + row["cant"], ocho, XBrushes.Black, new XRect(295, y, 50, 25), XStringFormats.TopLeft);
-                                        tf.DrawString("" + Convert.ToInt32(pieces).ToString("N0"), ocho, XBrushes.Black, new XRect(340, y, 50, 25), XStringFormats.TopLeft);
+                                        try
+                                        {
+                                            tf.DrawString("" + Convert.ToInt32(tctns).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                        }
+                                        catch {
+                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                        }
+                                        tf.DrawString("" + row["cant"] +" " + units, ocho, XBrushes.Black, new XRect(295, y, 50, 25), XStringFormats.TopLeft);
+                                        
+                                        tf.DrawString("" + Convert.ToInt32(pieces).ToString("N0"), ocho, XBrushes.Black, new XRect(340, y, 50, 25), XStringFormats.TopLeft);                                        
                                         tf.DrawString(csymbol_l + "" + "" + row["pu"] + "" + csymbol_r, ocho, XBrushes.Black, new XRect(400, y, 80, 25), XStringFormats.TopLeft);
                                         tf.DrawString(csymbol_l + "" + row["importe"] + "" + csymbol_r, ocho, XBrushes.Black, new XRect(505, y, 80, 25), XStringFormats.TopLeft);
 
@@ -3358,7 +3429,8 @@ namespace CenezzInvoice
                                                 gfx.DrawString("CLASE", ocho, XBrushes.Black, new XRect(156, y, 100, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PALLETS", ocho, XBrushes.Black, new XRect(198, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("CAJAS", ocho, XBrushes.Black, new XRect(253, y, 50, 25), XStringFormats.TopLeft);
-                                                gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                                                //gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                                                gfx.DrawString("UNID", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PIEZAS", ocho, XBrushes.Black, new XRect(357, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("" + currency, ocho, XBrushes.Black, new XRect(430, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("" + currency, ocho, XBrushes.Black, new XRect(535, y, 50, 25), XStringFormats.TopLeft);
@@ -3497,7 +3569,8 @@ namespace CenezzInvoice
                 gfx.DrawRectangle(pen, 195, y - 2, 400, 14);
                 gfx.DrawString("PALLETS", ocho, XBrushes.Black, new XRect(198, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("CAJAS", ocho, XBrushes.Black, new XRect(253, y, 50, 25), XStringFormats.TopLeft);
-                gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                //gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                gfx.DrawString("UNID", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("PIEZAS", ocho, XBrushes.Black, new XRect(358, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("PESO NETO", ocho, XBrushes.Black, new XRect(415, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("PESO BRUTO", ocho, XBrushes.Black, new XRect(510, y, 50, 25), XStringFormats.TopLeft);
@@ -3927,7 +4000,8 @@ namespace CenezzInvoice
                         gfx.DrawString("CLASE", ocho, XBrushes.Black, new XRect(156, y, 100, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PALLETS", ocho, XBrushes.Black, new XRect(198, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("CAJAS", ocho, XBrushes.Black, new XRect(253, y, 50, 25), XStringFormats.TopLeft);
-                        gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                        //gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                        gfx.DrawString("UNID", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PIEZAS", ocho, XBrushes.Black, new XRect(357, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PESO", ocho, XBrushes.Black, new XRect(430, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PESO", ocho, XBrushes.Black, new XRect(535, y, 50, 25), XStringFormats.TopLeft);
@@ -4064,7 +4138,7 @@ namespace CenezzInvoice
 
                                         try { pallets = double.Parse("" + pallet); }
                                         catch { pallets = 0; }
-
+                                        if (pallets.ToString() == "∞") { pallets = 0; }
 
                                         try
                                         {
@@ -4072,10 +4146,11 @@ namespace CenezzInvoice
                                         }
                                         catch
                                         {
-                                            pieces = 0;
+                                            pieces = double.Parse("" + row["cant"]);
                                         }
+                                        if (pieces.ToString() == "∞") { pieces = double.Parse("" + row["cant"]); }
 
-
+                                        
                                         try
                                         {
                                             tctns = double.Parse("" + row["cant"]) / sqm;
@@ -4106,7 +4181,9 @@ namespace CenezzInvoice
                                             cajad = double.Parse("" + row["cant"]) / sqm;
                                         }
                                         catch { cajad = 0; }
-
+                                        if (cajad.ToString() == "∞") {
+                                            cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
+                                        }
 
 
                                         if (contadoarr < cuentaprod - 1)
@@ -4124,13 +4201,35 @@ namespace CenezzInvoice
                                         //gfx.DrawString("" + row["pallets"], ocho, XBrushes.Black, new XRect(505, y, 50, 25), XStringFormats.TopLeft);
                                         //gfx.DrawString("" + row["pallets"], ocho, XBrushes.Black, new XRect(505, y, 50, 25), XStringFormats.TopLeft);
                                         tf.Alignment = XParagraphAlignment.Right;
-                                        gfx.DrawString("" + size + "X" + sizel, ocho, XBrushes.Black, new XRect(20, y, 100, 25), XStringFormats.TopLeft);
+
+                                        if (sizel == "")
+                                        {
+                                            gfx.DrawString("" + size + " " + sizel, ocho, XBrushes.Black, new XRect(20, y, 100, 25), XStringFormats.TopLeft);
+                                        }
+                                        else
+                                        {
+                                            gfx.DrawString("" + size + "X" + sizel, ocho, XBrushes.Black, new XRect(20, y, 100, 25), XStringFormats.TopLeft);
+                                        }
                                         gfx.DrawString("" + row["clave"].ToString(), SIETE, XBrushes.Black, new XRect(60, y, 100, 25), XStringFormats.TopLeft);
                                         gfx.DrawString("1", ocho, XBrushes.Black, new XRect(163, y, 100, 25), XStringFormats.TopLeft);
                                         tf.DrawString("" + pallets.ToString("n2"), ocho, XBrushes.Black, new XRect(175, y, 50, 25), XStringFormats.TopLeft);
-                                        tf.DrawString("" + Convert.ToInt32(tctns).ToString("N0"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
-                                        tf.DrawString("" + row["cant"], ocho, XBrushes.Black, new XRect(295, y, 50, 25), XStringFormats.TopLeft);
-                                        tf.DrawString("" + Convert.ToInt32(pieces).ToString("N0"), ocho, XBrushes.Black, new XRect(340, y, 50, 25), XStringFormats.TopLeft);
+                                        try
+                                        {
+                                            tf.DrawString("" + Convert.ToInt32(tctns).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                        }
+                                        catch
+                                        {
+                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                        }
+                                        tf.DrawString("" + row["cant"] + " " + units, ocho, XBrushes.Black, new XRect(295, y, 50, 25), XStringFormats.TopLeft);
+                                        try
+                                        {
+                                            tf.DrawString("" + Convert.ToInt32(pieces).ToString("N0"), ocho, XBrushes.Black, new XRect(340, y, 50, 25), XStringFormats.TopLeft);
+                                        }
+                                        catch
+                                        {
+                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N0"), ocho, XBrushes.Black, new XRect(340, y, 50, 25), XStringFormats.TopLeft);
+                                        }
                                         tf.DrawString("" + row["pesoneto"], ocho, XBrushes.Black, new XRect(400, y, 80, 25), XStringFormats.TopLeft);
                                         tf.DrawString("" + row["pesobruto"], ocho, XBrushes.Black, new XRect(505, y, 80, 25), XStringFormats.TopLeft);
 
@@ -4261,7 +4360,8 @@ namespace CenezzInvoice
                                                 gfx.DrawString("CLASE", ocho, XBrushes.Black, new XRect(156, y, 100, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PALLETS", ocho, XBrushes.Black, new XRect(198, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("CAJAS", ocho, XBrushes.Black, new XRect(253, y, 50, 25), XStringFormats.TopLeft);
-                                                gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                                                //gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                                                gfx.DrawString("UNID", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PIEZAS", ocho, XBrushes.Black, new XRect(357, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PESO", ocho, XBrushes.Black, new XRect(430, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PESO", ocho, XBrushes.Black, new XRect(535, y, 50, 25), XStringFormats.TopLeft);
@@ -4403,7 +4503,8 @@ namespace CenezzInvoice
                 gfx.DrawRectangle(pen, 195, y - 2, 400, 14);
                 gfx.DrawString("PALLETS", ocho, XBrushes.Black, new XRect(198, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("CAJAS", ocho, XBrushes.Black, new XRect(253, y, 50, 25), XStringFormats.TopLeft);
-                gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                //gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                gfx.DrawString("UNID", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("PIEZAS", ocho, XBrushes.Black, new XRect(358, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("PESO NETO", ocho, XBrushes.Black, new XRect(415, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("PESO BRUTO", ocho, XBrushes.Black, new XRect(510, y, 50, 25), XStringFormats.TopLeft);
@@ -4869,7 +4970,8 @@ namespace CenezzInvoice
                         gfx.DrawString("CLASE", ocho, XBrushes.Black, new XRect(156, y, 100, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PALLETS", ocho, XBrushes.Black, new XRect(198, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("CAJAS", ocho, XBrushes.Black, new XRect(253, y, 50, 25), XStringFormats.TopLeft);
-                        gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                        //gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                        gfx.DrawString("UNID", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PIEZAS", ocho, XBrushes.Black, new XRect(357, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PESO", ocho, XBrushes.Black, new XRect(430, y, 50, 25), XStringFormats.TopLeft);
                         gfx.DrawString("PESO", ocho, XBrushes.Black, new XRect(535, y, 50, 25), XStringFormats.TopLeft);
@@ -5014,9 +5116,12 @@ namespace CenezzInvoice
                                         }
                                         catch
                                         {
-                                            pieces = 0;
+                                            pieces = double.Parse("" + row["cant"]);
                                         }
-
+                                        if (pieces.ToString() == "∞")
+                                        {
+                                            pieces = double.Parse("" + row["cant"]);
+                                        }
 
                                         try
                                         {
@@ -5049,6 +5154,13 @@ namespace CenezzInvoice
                                         }
                                         catch { cajad = 0; }
 
+                                        if (cajad.ToString() == "∞")
+                                        {
+                                            cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
+                                        }
+
+
+
 
 
                                         if (contadoarr < cuentaprod - 1)
@@ -5066,12 +5178,27 @@ namespace CenezzInvoice
                                         //gfx.DrawString("" + row["pallets"], ocho, XBrushes.Black, new XRect(505, y, 50, 25), XStringFormats.TopLeft);
                                         //gfx.DrawString("" + row["pallets"], ocho, XBrushes.Black, new XRect(505, y, 50, 25), XStringFormats.TopLeft);
                                         tf.Alignment = XParagraphAlignment.Right;
-                                        gfx.DrawString("" + size + "X" + sizel, ocho, XBrushes.Black, new XRect(20, y, 100, 25), XStringFormats.TopLeft);
-                                        gfx.DrawString("" + row["clave"].ToString(), SIETE, XBrushes.Black, new XRect(60, y, 100, 25), XStringFormats.TopLeft);
+                                        if (sizel == "")
+                                        {
+                                            gfx.DrawString("" + size + "" + sizel, ocho, XBrushes.Black, new XRect(20, y, 100, 25), XStringFormats.TopLeft);
+                                        }
+                                        else
+                                        {
+                                            gfx.DrawString("" + size + "X" + sizel, ocho, XBrushes.Black, new XRect(20, y, 100, 25), XStringFormats.TopLeft);
+                                        }
+
+                                            gfx.DrawString("" + row["clave"].ToString(), SIETE, XBrushes.Black, new XRect(60, y, 100, 25), XStringFormats.TopLeft);
                                         gfx.DrawString("1", ocho, XBrushes.Black, new XRect(163, y, 100, 25), XStringFormats.TopLeft);
                                         tf.DrawString("" + pallets.ToString("n2"), ocho, XBrushes.Black, new XRect(175, y, 50, 25), XStringFormats.TopLeft);
-                                        tf.DrawString("" + Convert.ToInt32(tctns).ToString("N0"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
-                                        tf.DrawString("" + row["cant"], ocho, XBrushes.Black, new XRect(295, y, 50, 25), XStringFormats.TopLeft);
+                                        try
+                                        {
+                                            tf.DrawString("" + Convert.ToInt32(tctns).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                        }
+                                        catch
+                                        {
+                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                        }
+                                        tf.DrawString("" + row["cant"] + " " + units, ocho, XBrushes.Black, new XRect(295, y, 50, 25), XStringFormats.TopLeft);
                                         tf.DrawString("" + Convert.ToInt32(pieces).ToString("N0"), ocho, XBrushes.Black, new XRect(340, y, 50, 25), XStringFormats.TopLeft);
                                         tf.DrawString("" + row["pesoneto"], ocho, XBrushes.Black, new XRect(400, y, 80, 25), XStringFormats.TopLeft);
                                         tf.DrawString("" + row["pesobruto"], ocho, XBrushes.Black, new XRect(505, y, 80, 25), XStringFormats.TopLeft);
@@ -5203,7 +5330,8 @@ namespace CenezzInvoice
                                                 gfx.DrawString("CLASE", ocho, XBrushes.Black, new XRect(156, y, 100, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PALLETS", ocho, XBrushes.Black, new XRect(198, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("CAJAS", ocho, XBrushes.Black, new XRect(253, y, 50, 25), XStringFormats.TopLeft);
-                                                gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                                                //gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                                                gfx.DrawString("UNID", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PIEZAS", ocho, XBrushes.Black, new XRect(357, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PESO", ocho, XBrushes.Black, new XRect(430, y, 50, 25), XStringFormats.TopLeft);
                                                 gfx.DrawString("PESO", ocho, XBrushes.Black, new XRect(535, y, 50, 25), XStringFormats.TopLeft);
@@ -5345,7 +5473,8 @@ namespace CenezzInvoice
                 gfx.DrawRectangle(pen, 195, y - 2, 400, 14);
                 gfx.DrawString("PALLETS", ocho, XBrushes.Black, new XRect(198, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("CAJAS", ocho, XBrushes.Black, new XRect(253, y, 50, 25), XStringFormats.TopLeft);
-                gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                //gfx.DrawString("M²", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
+                gfx.DrawString("UNID", ocho, XBrushes.Black, new XRect(320, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("PIEZAS", ocho, XBrushes.Black, new XRect(358, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("PESO NETO", ocho, XBrushes.Black, new XRect(415, y, 50, 25), XStringFormats.TopLeft);
                 gfx.DrawString("PESO BRUTO", ocho, XBrushes.Black, new XRect(510, y, 50, 25), XStringFormats.TopLeft);

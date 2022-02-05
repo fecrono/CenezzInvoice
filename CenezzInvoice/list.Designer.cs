@@ -465,6 +465,7 @@
             this.label22.Size = new System.Drawing.Size(205, 20);
             this.label22.TabIndex = 312;
             this.label22.Text = "Decimales para imprimir:";
+            this.label22.Visible = false;
             // 
             // deces
             // 
@@ -488,6 +489,7 @@
             0,
             0,
             0});
+            this.deces.Visible = false;
             this.deces.ValueChanged += new System.EventHandler(this.deces_ValueChanged);
             // 
             // list

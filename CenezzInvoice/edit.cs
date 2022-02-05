@@ -13,6 +13,7 @@ namespace CenezzInvoice
 {
     public partial class editor : Form
     {
+        public int deci = 0;
         public editor()
         {
             InitializeComponent();
@@ -247,7 +248,7 @@ namespace CenezzInvoice
             cm.Dispose(); da.Dispose(); dt.Dispose();
 
 
-
+            deci = Int32.Parse("" + deces.Value);
             con.Close();
         }
 
@@ -272,7 +273,7 @@ namespace CenezzInvoice
 
                 string adesc, clave, price, umes = "", contain, pallet = "";
                 clave = "" + cveadd.Text;
-                double acant1 = 0, aprecio1 = 0, totalon = 0, pallets = 0, kgscaja = 0, kilos = 0, metros = 0, cajas = 0;
+                double acant1 = 0, aprecio1 = 0, kgspiece = 0, totalon = 0, pallets = 0, kgscaja = 0, kilos = 0, metros = 0, cajas = 0;
 
 
                 acant1 = Math.Round(double.Parse(cantadd.Text), 2, MidpointRounding.AwayFromZero);
@@ -288,9 +289,10 @@ namespace CenezzInvoice
                 {
                     foreach (DataRow rowp in dtpaas.Rows)
                     {
-                        aprecio1 = Math.Round(double.Parse("" + rowp["precio"]), 2, MidpointRounding.AwayFromZero);
+                        aprecio1 = Math.Round(double.Parse("" + rowp["precio"]), deci, MidpointRounding.AwayFromZero);
                         umes = "" + rowp["ume"];
                         pallet = "" + rowp["pallet"];
+                        kgspiece = Math.Round(double.Parse("" + rowp["kgspiece"]), 2, MidpointRounding.AwayFromZero);
                         kgscaja = Math.Round(double.Parse("" + rowp["kgscaja"]), 2, MidpointRounding.AwayFromZero);
                         metros = Math.Round(double.Parse("" + rowp["mtscaja"]), 2, MidpointRounding.AwayFromZero);
                         //kilos = Math.Round(double.Parse("" + rowp["precio"]), 2, MidpointRounding.AwayFromZero);
@@ -311,7 +313,7 @@ namespace CenezzInvoice
                     {
                         foreach (DataRow rowp in dtpaas.Rows)
                         {
-                            aprecio1 = Math.Round(double.Parse("" + rowp["precio"]), 2, MidpointRounding.AwayFromZero);
+                            aprecio1 = Math.Round(double.Parse("" + rowp["precio"]), deci, MidpointRounding.AwayFromZero);
                         }
                     }
                     dapaas.Dispose(); dtpaas.Dispose(); cmd.Dispose();
@@ -341,6 +343,14 @@ namespace CenezzInvoice
                 try
                 {
                     kilos = double.Parse("" + cajas) * kgscaja;
+                    if (kilos == 0)
+                    {
+                        kilos = double.Parse("" + acant1) * kgspiece;
+                    }
+                    if (kilos == 0)
+                    {
+                        kilos = 0;
+                    }
                 }
                 catch { kilos = 1; }
                 //if (pallets < 1) { pallets = 1; }
@@ -350,7 +360,7 @@ namespace CenezzInvoice
 
                 totalon = aprecio1 * acant1;
                 //cant clave       ume         punit          kilos caja        importe                           container
-                string[] row1 = { "" + clave, "" + umes, kgscaja.ToString("n2"), "" + aprecio1.ToString("n2"), "" + totalon.ToString("n2"), "" + containeradd.Text, "" + kilos.ToString("n2"), "" + pallets.ToString("n2") };
+                string[] row1 = { "" + clave, "" + umes, kgscaja.ToString("n2"), "" + aprecio1.ToString("n" + deci), "" + totalon.ToString("n" + +deci), "" + containeradd.Text, "" + kilos.ToString("n2"), "" + pallets.ToString("n2") };
                 addrows.Items.Add("" + acant1.ToString("n2")).SubItems.AddRange(row1);
 
 
@@ -361,14 +371,14 @@ namespace CenezzInvoice
                 {
                     dblSuma += Convert.ToDouble(item.SubItems[5].Text);
                 }
-                totrefs.Text = "" + dblSuma.ToString("n2");
+                totrefs.Text = "" + dblSuma.ToString("n" + +deci);
 
                 dblSuma = 0;
                 foreach (ListViewItem item in addrows.Items)
                 {
                     dblSuma += Convert.ToDouble(item.SubItems[7].Text);
                 }
-                neto.Text = "" + dblSuma.ToString("n2");
+                neto.Text = "" + dblSuma.ToString("n" + deci);
                 dblSuma = 0;
 
                 //obtener peso bruto
