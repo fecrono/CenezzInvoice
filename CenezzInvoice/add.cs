@@ -276,19 +276,19 @@ namespace CenezzInvoice
         private void button4_Click(object sender, EventArgs e)
         {
 
-            if ((cveadd.Text != "") && (cantadd.Text != "") && (containeradd.Text !=""))
+            if ((cveadd.Text != "") && (cantadd.Text != "") && (containeradd.Text != ""))
             {
 
 
-                string adesc, clave, price, umes = "", contain,pallet="";
+                string adesc, clave, price, umes = "", contain, pallet = "";
                 clave = "" + cveadd.Text;
-                double acant1 = 0, aprecio1 = 0, kgspiece=0, totalon = 0, pallets = 0, kgscaja = 0, kilos = 0,metros=0, cajas=0;
+                double acant1 = 0, aprecio1 = 0, kgspiece = 0, totalon = 0, pallets = 0, kgscaja = 0, kilos = 0, metros = 0, cajasp = 0, cajasm2 = 0;
 
 
                 acant1 = Math.Round(double.Parse(cantadd.Text), 2, MidpointRounding.AwayFromZero);
 
                 SqlConnection con = new SqlConnection(config.cade);
-                SqlCommand cmd = new SqlCommand("SELECT clave,descr,precio,linea,ume,pallet,kgspiece,kgscaja,mtscaja FROM artsipl WHERE clave= '" + clave + "' ORDER BY clave ASC;", con);
+                SqlCommand cmd = new SqlCommand("SELECT clave,descr,precio,linea,ume,pallet,kgspiece,kgscaja,mtscaja,caja FROM artsipl WHERE clave= '" + clave + "' ORDER BY clave ASC;", con);
                 con.Open();
                 SqlDataAdapter dapaas = new SqlDataAdapter(cmd);
                 DataTable dtpaas = new DataTable();
@@ -304,7 +304,8 @@ namespace CenezzInvoice
                         kgspiece = Math.Round(double.Parse("" + rowp["kgspiece"]), 2, MidpointRounding.AwayFromZero);
                         kgscaja = Math.Round(double.Parse("" + rowp["kgscaja"]), 2, MidpointRounding.AwayFromZero);
                         metros = Math.Round(double.Parse("" + rowp["mtscaja"]), 2, MidpointRounding.AwayFromZero);
-                        //kilos = Math.Round(double.Parse("" + rowp["precio"]), 2, MidpointRounding.AwayFromZero);
+                        cajasp = Math.Round(double.Parse("" + rowp["caja"]), 2, MidpointRounding.AwayFromZero);
+                        cajasm2 = Math.Round(double.Parse("" + rowp["mtscaja"]), 2, MidpointRounding.AwayFromZero);
                     }
                 }
 
@@ -312,7 +313,7 @@ namespace CenezzInvoice
 
                 if (listpr.Text != "")
                 {
-                    cmd = new SqlCommand("SELECT l.id,l.nom,p.precio FROM listasipl as l INNER JOIN pricesipl as p ON p.list = l.id WHERE p.clave='" + clave + "' AND l.nom='"+ listpr.Text + "';", con);
+                    cmd = new SqlCommand("SELECT l.id,l.nom,p.precio FROM listasipl as l INNER JOIN pricesipl as p ON p.list = l.id WHERE p.clave='" + clave + "' AND l.nom='" + listpr.Text + "';", con);
                     //MessageBox.Show("" + "SELECT l.id,l.nom,p.precio FROM listasipl as l INNER JOIN pricesipl as p ON p.list = l.id WHERE p.clave='" + clave + "' AND l.nom='" + listpr.Text + "';");
                     dapaas = new SqlDataAdapter(cmd);
                     dtpaas = new DataTable();
@@ -322,7 +323,7 @@ namespace CenezzInvoice
                     {
                         foreach (DataRow rowp in dtpaas.Rows)
                         {
-                            aprecio1 = Math.Round(double.Parse("" + rowp["precio"]),deci, MidpointRounding.AwayFromZero);
+                            aprecio1 = Math.Round(double.Parse("" + rowp["precio"]), deci, MidpointRounding.AwayFromZero);
                         }
                     }
                     dapaas.Dispose(); dtpaas.Dispose(); cmd.Dispose();
@@ -341,17 +342,30 @@ namespace CenezzInvoice
                 //if (pallets < 1) { pallets = 1; }
                 if (pallets.ToString() == "∞") { pallets = 0; }
 
-                try
-                {
-                    cajas = double.Parse("" + acant1) / metros;
-                }
-                catch { cajas = 1; }
+                if (umes == "m²")
+                { 
+                    try
+                    {
+                        cajasm2 = double.Parse("" + acant1) / metros;
+                    }
+                    catch { cajasm2 = 1; }
                 //if (pallets < 1) { pallets = 1; }
-                if (cajas.ToString() == "∞") { cajas = 0; }
+                }
+                else
+                {
+                    try
+                    {
+                        cajasm2 = double.Parse("" + acant1) / cajasp;
+                    }
+                    catch { cajasm2 = 1; }
+
+                }
+
+                if (cajasm2.ToString() == "∞") { cajasm2 = 0; }
 
                 try
                 {
-                    kilos = double.Parse("" + cajas) * kgscaja;
+                    kilos = double.Parse("" + cajasm2) * kgscaja;
                     if (kilos == 0)
                     {
                         kilos = double.Parse("" + acant1) * kgspiece;
@@ -369,7 +383,7 @@ namespace CenezzInvoice
 
                 totalon = aprecio1 * acant1;
                 //cant clave       ume         punit          kilos caja        importe                           container
-                string[] row1 = { "" + clave, "" + umes, kgscaja.ToString("n2"), "" + aprecio1.ToString("n"  +deci), "" + totalon.ToString("n" + +deci), "" + containeradd.Text, "" + kilos.ToString("n2"), "" +  pallets.ToString("n2") };
+                string[] row1 = { "" + clave, "" + umes, kgscaja.ToString("n2"), "" + aprecio1.ToString("n"  +deci), "" + totalon.ToString("n" + +deci), "" + containeradd.Text, "" + kilos.ToString("n2"), "" +  pallets.ToString("n2"), "" + cajasm2.ToString("n2") };
                 addrows.Items.Add("" + acant1.ToString("n2")).SubItems.AddRange(row1);
 
 
@@ -510,6 +524,7 @@ namespace CenezzInvoice
             palled.Text = "";
             kgboxx.Text = "";
             kilose.Text = "";
+            cajass.Text = "";
             if (addrows.SelectedIndices.Count <= 0)
             {
                 return;
@@ -526,6 +541,7 @@ namespace CenezzInvoice
                 kilose.Text = "" + addrows.Items[intselectedindex].SubItems[7].Text;
                 containeradd.Text = "" + addrows.Items[intselectedindex].SubItems[6].Text;
                 palled.Text = "" + addrows.Items[intselectedindex].SubItems[8].Text;
+                cajass.Text = "" + addrows.Items[intselectedindex].SubItems[9].Text;
                 delref.Enabled = true;
             }
         }
@@ -676,8 +692,8 @@ namespace CenezzInvoice
                         {                                    // 0    1    2      4      5      6         7     8
                                                              //cant,clave,ume, punit,importe,container,kgstot,pallets
                             brutocont = (Convert.ToDouble("" + palletkgs.Text) * Convert.ToDouble("" + item.SubItems[8].Text)) + Convert.ToDouble(item.SubItems[7].Text);
-                            queryinsref = "INSERT INTO rowsipl ( ord, cant, clave, ume, pu, importe, container,pallets,pesoneto, pesobruto)" +
-                            " VALUES ('" + uuid + "', '" + item.SubItems[0].Text + "', '" + item.SubItems[1].Text + "', '" + item.SubItems[2].Text + "', '" + item.SubItems[4].Text + "', '" + item.SubItems[5].Text + "', '" + item.SubItems[6].Text + "','" + item.SubItems[8].Text + "','" + item.SubItems[7].Text + "','" + brutocont.ToString("n2") + "');";
+                            queryinsref = "INSERT INTO rowsipl ( ord, cant, clave, ume, pu, importe, container,pallets,pesoneto, pesobruto,cajas)" +
+                            " VALUES ('" + uuid + "', '" + item.SubItems[0].Text + "', '" + item.SubItems[1].Text + "', '" + item.SubItems[2].Text + "', '" + item.SubItems[4].Text + "', '" + item.SubItems[5].Text + "', '" + item.SubItems[6].Text + "','" + item.SubItems[8].Text + "','" + item.SubItems[7].Text + "','" + brutocont.ToString("n2") + "','" + item.SubItems[9].Text + "');";
                                                             // 0                                      1                                      2                              4                            5                                      6                        7                                  8
                                                             //cant,                            clave,                                 ume,                         punit,                        importe,                              container,                  kgstot,                          pallets
                                 SqlCommand myCommandref = new SqlCommand(queryinsref, con);
@@ -1121,10 +1137,10 @@ namespace CenezzInvoice
                     {
                         string adesc, clave, price, umes = "", contain;
                         clave = "" + clavedit.Text;
-                        double acant1 = 0, aprecio1 = 0, totalon = 0, pallets = 0, cued = 0, kilosed = 0;
+                        double acant1 = 0, aprecio1 = 0, totalon = 0, pallets = 0, cued = 0, kilosed = 0,cajaded=0;
                         acant1 = Math.Round(double.Parse(cantedit.Text), 2, MidpointRounding.AwayFromZero);
                         pallets = Math.Round(double.Parse(palled.Text), 2, MidpointRounding.AwayFromZero);
-
+                        cajaded = Math.Round(double.Parse(cajass.Text), 2, MidpointRounding.AwayFromZero);
                         cued = Math.Round(double.Parse(cue.Text), 2, MidpointRounding.AwayFromZero); ;
                         kilosed = Math.Round(double.Parse(kilose.Text), 2, MidpointRounding.AwayFromZero); ;
 
@@ -1176,6 +1192,7 @@ namespace CenezzInvoice
                         addrows.Items[index].SubItems[5].Text = "" + totalon.ToString("n" + deci);
                         addrows.Items[index].SubItems[6].Text = "" + containeradd.Text;
                         addrows.Items[index].SubItems[8].Text = "" + pallets.ToString("n2");
+                        addrows.Items[index].SubItems[9].Text = "" + cajaded.ToString("n2");
 
                         addrows.Items[index].SubItems[3].Text = "" + kgboxx.Text;
                         addrows.Items[index].SubItems[7].Text = "" + kilosed.ToString("n2");

@@ -20,3 +20,9 @@ NOT NULL DEFAULT('SIN PRECINTO');
 ALTER TABLE rowsipl
 ADD pallets varchar(254)
 NOT NULL DEFAULT('0.0');
+
+ALTER TABLE rowsipl
+ADD cajas varchar(254)
+NOT NULL DEFAULT('0.0');
+
+

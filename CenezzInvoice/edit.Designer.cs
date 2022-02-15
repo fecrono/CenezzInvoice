@@ -140,6 +140,9 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label23 = new System.Windows.Forms.Label();
             this.deces = new System.Windows.Forms.NumericUpDown();
+            this.label30 = new System.Windows.Forms.Label();
+            this.cajass = new System.Windows.Forms.TextBox();
+            this.cajas = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -912,7 +915,7 @@
             // palled
             // 
             this.palled.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.palled.Location = new System.Drawing.Point(619, 27);
+            this.palled.Location = new System.Drawing.Point(576, 27);
             this.palled.Name = "palled";
             this.palled.Size = new System.Drawing.Size(39, 20);
             this.palled.TabIndex = 181;
@@ -942,7 +945,7 @@
             // kilose
             // 
             this.kilose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.kilose.Location = new System.Drawing.Point(555, 27);
+            this.kilose.Location = new System.Drawing.Point(512, 27);
             this.kilose.Name = "kilose";
             this.kilose.Size = new System.Drawing.Size(63, 20);
             this.kilose.TabIndex = 274;
@@ -959,7 +962,7 @@
             // 
             // palletkgs
             // 
-            this.palletkgs.Location = new System.Drawing.Point(513, 27);
+            this.palletkgs.Location = new System.Drawing.Point(470, 27);
             this.palletkgs.Name = "palletkgs";
             this.palletkgs.ReadOnly = true;
             this.palletkgs.Size = new System.Drawing.Size(39, 20);
@@ -968,11 +971,11 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(378, 30);
+            this.label20.Location = new System.Drawing.Point(386, 30);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(133, 13);
+            this.label20.Size = new System.Drawing.Size(84, 13);
             this.label20.TabIndex = 275;
-            this.label20.Text = "Kgs. tarima con embalajes:";
+            this.label20.Text = "Kgs.tarima/emb:";
             // 
             // neto
             // 
@@ -1047,7 +1050,8 @@
             this.totadded,
             this.containeradded,
             this.kgsrow,
-            this.pallets});
+            this.pallets,
+            this.cajas});
             this.addrows.Font = new System.Drawing.Font("Tahoma", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addrows.FullRowSelect = true;
             this.addrows.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -1153,7 +1157,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(617, 14);
+            this.label27.Location = new System.Drawing.Point(574, 14);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(36, 13);
             this.label27.TabIndex = 290;
@@ -1171,7 +1175,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(553, 13);
+            this.label29.Location = new System.Drawing.Point(510, 13);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(41, 13);
             this.label29.TabIndex = 292;
@@ -1179,6 +1183,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label30);
+            this.groupBox3.Controls.Add(this.cajass);
             this.groupBox3.Controls.Add(this.clavedit);
             this.groupBox3.Controls.Add(this.label29);
             this.groupBox3.Controls.Add(this.cantedit);
@@ -1236,6 +1242,27 @@
             0,
             0});
             this.deces.Visible = false;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(614, 13);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(33, 13);
+            this.label30.TabIndex = 311;
+            this.label30.Text = "Cajas";
+            // 
+            // cajass
+            // 
+            this.cajass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cajass.Location = new System.Drawing.Point(616, 27);
+            this.cajass.Name = "cajass";
+            this.cajass.Size = new System.Drawing.Size(39, 20);
+            this.cajass.TabIndex = 310;
+            // 
+            // cajas
+            // 
+            this.cajas.Text = "Cajas";
             // 
             // editor
             // 
@@ -1424,5 +1451,8 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.NumericUpDown deces;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TextBox cajass;
+        private System.Windows.Forms.ColumnHeader cajas;
     }
 }

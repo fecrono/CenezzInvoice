@@ -135,6 +135,9 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.deces = new System.Windows.Forms.NumericUpDown();
             this.label22 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.cajass = new System.Windows.Forms.TextBox();
+            this.cajas = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -579,7 +582,8 @@
             this.totadded,
             this.containeradded,
             this.kgsrow,
-            this.pallets});
+            this.pallets,
+            this.cajas});
             this.addrows.Font = new System.Drawing.Font("Tahoma", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addrows.FullRowSelect = true;
             this.addrows.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -602,7 +606,7 @@
             // claveadded
             // 
             this.claveadded.Text = "Clave";
-            this.claveadded.Width = 113;
+            this.claveadded.Width = 109;
             // 
             // unidad
             // 
@@ -616,12 +620,12 @@
             // punit
             // 
             this.punit.Text = "P. Unitario";
-            this.punit.Width = 78;
+            this.punit.Width = 61;
             // 
             // totadded
             // 
             this.totadded.Text = "Importe";
-            this.totadded.Width = 112;
+            this.totadded.Width = 104;
             // 
             // containeradded
             // 
@@ -635,6 +639,7 @@
             // pallets
             // 
             this.pallets.Text = "Pallets";
+            this.pallets.Width = 56;
             // 
             // idadded
             // 
@@ -978,7 +983,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(548, 15);
+            this.label29.Location = new System.Drawing.Point(505, 15);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(41, 13);
             this.label29.TabIndex = 307;
@@ -996,7 +1001,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(612, 16);
+            this.label27.Location = new System.Drawing.Point(569, 16);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(36, 13);
             this.label27.TabIndex = 305;
@@ -1040,7 +1045,7 @@
             // 
             // palletkgs
             // 
-            this.palletkgs.Location = new System.Drawing.Point(510, 30);
+            this.palletkgs.Location = new System.Drawing.Point(467, 30);
             this.palletkgs.Name = "palletkgs";
             this.palletkgs.ReadOnly = true;
             this.palletkgs.Size = new System.Drawing.Size(39, 20);
@@ -1049,16 +1054,16 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(375, 33);
+            this.label20.Location = new System.Drawing.Point(382, 33);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(133, 13);
+            this.label20.Size = new System.Drawing.Size(84, 13);
             this.label20.TabIndex = 299;
-            this.label20.Text = "Kgs. tarima con embalajes:";
+            this.label20.Text = "Kgs.tarima/emb:";
             // 
             // kilose
             // 
             this.kilose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.kilose.Location = new System.Drawing.Point(550, 30);
+            this.kilose.Location = new System.Drawing.Point(507, 30);
             this.kilose.Name = "kilose";
             this.kilose.Size = new System.Drawing.Size(63, 20);
             this.kilose.TabIndex = 298;
@@ -1076,7 +1081,7 @@
             // palled
             // 
             this.palled.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.palled.Location = new System.Drawing.Point(614, 30);
+            this.palled.Location = new System.Drawing.Point(571, 30);
             this.palled.Name = "palled";
             this.palled.Size = new System.Drawing.Size(39, 20);
             this.palled.TabIndex = 296;
@@ -1115,6 +1120,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label23);
+            this.groupBox3.Controls.Add(this.cajass);
             this.groupBox3.Controls.Add(this.label29);
             this.groupBox3.Controls.Add(this.kgboxx);
             this.groupBox3.Controls.Add(this.label28);
@@ -1173,6 +1180,27 @@
             this.label22.TabIndex = 310;
             this.label22.Text = "Decimales:";
             this.label22.Visible = false;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(609, 16);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(33, 13);
+            this.label23.TabIndex = 309;
+            this.label23.Text = "Cajas";
+            // 
+            // cajass
+            // 
+            this.cajass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cajass.Location = new System.Drawing.Point(611, 30);
+            this.cajass.Name = "cajass";
+            this.cajass.Size = new System.Drawing.Size(39, 20);
+            this.cajass.TabIndex = 308;
+            // 
+            // cajas
+            // 
+            this.cajas.Text = "Cajas";
             // 
             // add
             // 
@@ -1354,5 +1382,8 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.NumericUpDown deces;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox cajass;
+        private System.Windows.Forms.ColumnHeader cajas;
     }
 }

@@ -676,6 +676,9 @@ namespace CenezzInvoice
                             tctns = 0;
                         }
 
+                        //CALCULO DIRECTO DESDE LA BASE DE DATOS
+                        tctns = double.Parse("" + row["cajas"]);
+
                         try
                         {
                             tsqm = sqm * tctns;
@@ -705,6 +708,10 @@ namespace CenezzInvoice
                             cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
                         }
                         
+                        //calculo directo desde la base de datos
+                        cajad = double.Parse("" + row["cajas"]);
+
+
                         proforma.Cells["D" + rownu].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         proforma.Cells["D" + rownu].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         proforma.Cells["D" + rownu].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
@@ -1953,6 +1960,9 @@ namespace CenezzInvoice
                                 }
                                 catch { tctns = 0; }
 
+                                //CALCULO DIRECTO DESDE LA BASE DE DATOS
+                                tctns = double.Parse("" + row["cajas"]);
+
                                 try
                                 {
                                     tsqm = sqm * tctns;
@@ -1996,7 +2006,8 @@ namespace CenezzInvoice
                                 if (cajad.ToString() == "∞") {
                                     cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
                                 }
-
+                                //CALCULO DIRECTO DESDE LA BASE DE DATOS
+                                cajad = double.Parse("" + row["cajas"]);
 
                                 kilosnetos = 0;  kilosbrutos = 0;
 
@@ -3323,6 +3334,9 @@ namespace CenezzInvoice
                                                 tctns = 0;
                                             }
                                         }
+                                        
+                                        //CALCULO DIRECTO DESDE LA BASE DE DATOS
+                                        tctns = double.Parse("" + row["cajas"]);
                                         //MessageBox.Show("" + tctns + " " + double.Parse("" + row["cant"]) + " " + double.Parse("" + caja));
                                         try
                                         {
@@ -3352,7 +3366,8 @@ namespace CenezzInvoice
                                         if (cajad.ToString() == "∞") {
                                             cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
                                         }
-
+                                        //CALCULO DIRECTO DESDE LA BASE DE DATOS
+                                        cajad = double.Parse("" + row["cajas"]);
 
 
                                         if (contadoarr < cuentaprod - 1)
@@ -3385,10 +3400,10 @@ namespace CenezzInvoice
                                         tf.DrawString("" + pallets.ToString("n2"), ocho, XBrushes.Black, new XRect(175, y, 50, 25), XStringFormats.TopLeft);
                                         try
                                         {
-                                            tf.DrawString("" + Convert.ToInt32(tctns).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                            tf.DrawString("" + tctns.ToString("N2"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
                                         }
                                         catch {
-                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N2"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
                                         }
 
                                         if (units == "m²")
@@ -4202,8 +4217,9 @@ namespace CenezzInvoice
                                             tctns = 0;
                                         }
                                         if (tctns.ToString() == "∞") { tctns  = double.Parse("" + row["cant"]) / double.Parse("" + caja); }
-
-
+                                        
+                                        //CALCULO DIRECTO DESDE LA BASE DE DATOS
+                                        tctns = double.Parse("" + row["cajas"]);
                                         try
                                         {
                                             tsqm = sqm * tctns;
@@ -4231,7 +4247,9 @@ namespace CenezzInvoice
                                         if (cajad.ToString() == "∞") {
                                             cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
                                         }
-
+                                        
+                                        //CALCULO DIRECTO DESDE LA BASE DE DATOS
+                                        cajad = double.Parse("" + row["cajas"]);
 
                                         if (contadoarr < cuentaprod - 1)
                                         {
@@ -4262,11 +4280,11 @@ namespace CenezzInvoice
                                         tf.DrawString("" + pallets.ToString("n2"), ocho, XBrushes.Black, new XRect(175, y, 50, 25), XStringFormats.TopLeft);
                                         try
                                         {
-                                            tf.DrawString("" + Convert.ToInt32(tctns).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                            tf.DrawString("" + tctns.ToString("N2"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
                                         }
                                         catch
                                         {
-                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N2"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
                                         }
 
 
@@ -5181,7 +5199,8 @@ namespace CenezzInvoice
                                         catch { tctns = 0;
                                             tctns = double.Parse("" + row["cant"]) / double.Parse("" + caja);
                                         }
-
+                                        //CALCULO DIRECTO DESDE LA BASE DE DATOS
+                                        tctns = double.Parse("" + row["cajas"]);
                                         try
                                         {
                                             tsqm = sqm * tctns;
@@ -5211,7 +5230,8 @@ namespace CenezzInvoice
                                         {
                                             cajad = double.Parse("" + row["cant"]) / double.Parse("" + caja);
                                         }
-
+                                        //CALCULO DIRECTO DESDE LA BASE DE DATOS
+                                        cajad = double.Parse("" + row["cajas"]);
 
 
 
@@ -5245,11 +5265,11 @@ namespace CenezzInvoice
                                         tf.DrawString("" + pallets.ToString("n2"), ocho, XBrushes.Black, new XRect(175, y, 50, 25), XStringFormats.TopLeft);
                                         try
                                         {
-                                            tf.DrawString("" + Convert.ToInt32(tctns).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                            tf.DrawString("" + tctns.ToString("N2"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
                                         }
                                         catch
                                         {
-                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N1"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
+                                            tf.DrawString("" + Convert.ToInt32(0).ToString("N2"), ocho, XBrushes.Black, new XRect(235, y, 50, 25), XStringFormats.TopLeft);
                                         }
                                         tf.DrawString("" + row["cant"] + "", ocho, XBrushes.Black, new XRect(295, y, 50, 25), XStringFormats.TopLeft);
                                         tf.DrawString("" + Convert.ToInt32(pieces).ToString("N0"), ocho, XBrushes.Black, new XRect(340, y, 50, 25), XStringFormats.TopLeft);
